@@ -1,9 +1,9 @@
 port:  5000
 markdown: kramdown
-name: Probation Community Resources
-title: Probation Community Resources
-url: https://probationresources.datamade.us
+name: Illinois Re-Entry Resources
+title: Illinois Re-Entry Resources
 description: ""
 encoding: utf-8
+url: "https://pjsier.github.io"
+baseurl: "/probation-resources-map"
 timezone: America/Chicago
-
