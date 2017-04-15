@@ -451,11 +451,6 @@ var CartoDbLib = {
     // Format text with acronyms.
     var lookup = {
       "reentry": "Re-entry"
-      // "asl_or_assistance_for_hearing_impaired": "ASL or assistance for hearing impaired",
-      // "dui_drunk_driving_treatment": "DUI Drunk driving treatment",
-      // "mental_illness_and_substance_abuse_misa_or_dual_diagnosis": "Mental illness and substance abuse (MISA)",
-      // "community_meetings_aa_na": "Community meetings (AA/NA)",
-      // "recovery_home_halfway_house": "Recovery home/Halfway house"
     }
     if (text in lookup) {
       var capitalText = lookup[text]
@@ -468,7 +463,7 @@ var CartoDbLib = {
   },
 
   addUnderscore: function(text) {
-    newText = text.replace(/\s/g, '_').replace(/[\/]/g, '_').replace(/[\:]/g, '')
+    newText = text.replace(/\s/g, '_').replace(/[\/]/g, '_').replace(/[\:]/g, '').replace('-', '');
     if (newText[0].match(/^[1-9]\d*/)) {
       newText = "_" + newText
     }
