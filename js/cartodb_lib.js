@@ -228,19 +228,10 @@ var CartoDbLib = {
             attributeArr.push(facilityName, facilityAddress, facilityHours, facilityNumber, facilityWebsite)
 
             if (CartoDbLib.deleteBlankResults(attributeArr) < 5) {
-
-              if (facilityName != "") {
-                elements["facility"] = facilityName;
-              }
-              if (facilityAddress != "") {
-                elements["address"] = facilityAddress;
-              }
-              if (facilityHours != "") {
-                elements["hours"] = facilityHours;
-              }
-              if (facilityNumber != "") {
-                elements["phone"] = facilityNumber;
-              }
+              elements["facility"] = facilityName;
+              elements["address"] = facilityAddress;
+              elements["hours"] = facilityHours;
+              elements["phone"] = facilityNumber;
               if (facilityWebsite != "") {
                 site = "<a href='{{website}}' target='_blank'><i class='fa fa-reply' aria-hidden='true'></i> Website</a>"
                 if (facilityWebsite.match(/^http/)) {
@@ -249,6 +240,9 @@ var CartoDbLib = {
                 else {
                   elements["website"] = "http://" + facilityWebsite;
                 }
+              }
+              else {
+                facilityWebsite = "";
               }
 
               // Check if facility is in 'location' cookie.
@@ -743,18 +737,10 @@ var CartoDbLib = {
 
             // Check that the array has only five elements (start count from 0).
             if (CartoDbLib.deleteBlankResults(attributeArr) < 5) {
-              if (facilityName != "") {
-                elements["facility"] = facilityName;
-              }
-              if (facilityAddress != "") {
-                elements["address"] = facilityAddress;
-              }
-              if (facilityHours != "") {
-                elements["hours"] = facilityHours;
-              }
-              if (facilityNumber != "") {
-                elements["phone"] = facilityNumber;
-              }
+              elements["facility"] = facilityName;
+              elements["address"] = facilityAddress;
+              elements["hours"] = facilityHours;
+              elements["phone"] = facilityNumber;
               if (facilityWebsite != "") {
                 site = "<a href='{{website}}' target='_blank'><i class='fa fa-reply' aria-hidden='true'></i> Website</a>"
                 if (facilityWebsite.match(/^http/)) {
@@ -763,6 +749,9 @@ var CartoDbLib = {
                 else {
                   elements["website"] = "http://" + facilityWebsite;
                 }
+              }
+              else {
+                facilityWebsite = "";
               }
 
               var output = Mustache.render("<tr><td><span class='facility-name'>{{facility}}</span>" +
