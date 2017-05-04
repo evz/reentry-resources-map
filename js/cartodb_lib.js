@@ -469,7 +469,7 @@ var CartoDbLib = {
     var results = '';
 
     $.each( array, function(index, obj) {
-      CartoDbLib.userSelection += " AND " + CartoDbLib.addUnderscore(obj.text);
+      CartoDbLib.userSelection += " OR " + CartoDbLib.addUnderscore(obj.text);
       results += (obj.text + ", ")
     })
 

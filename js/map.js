@@ -25,12 +25,9 @@ $(function() {
       CartoDbLib.doSearch();
     }
     else {
-      $('#btnViewMode').html("<i class='fa fa-list'></i> List View");
-      $('#mapCanvas').show();
-      $('#listCanvas').hide();
-      // $('#btnViewMode').html("<i class='fa fa-map-marker'></i> Map View");
-      // $('#listCanvas').show();
-      // $('#mapCanvas').hide();
+      $('#btnViewMode').html("<i class='fa fa-map-marker'></i> Map View");
+      $('#listCanvas').show();
+      $('#mapCanvas').hide();
 
       CartoDbLib.doSearch();
     }
@@ -46,6 +43,7 @@ $(function() {
       $('#btnViewMode').html("<i class='fa fa-list'></i> List View");
       $('#listCanvas').hide();
       $('#mapCanvas').show();
+      CartoDbLib.map.invalidateSize();
     }
   });
 
