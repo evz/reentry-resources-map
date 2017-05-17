@@ -466,12 +466,16 @@ var CartoDbLib = {
 
   // Call this in createSearch, when creating SQL queries from user selection.
   userSelectSQL: function(array) {
-    var results = '';
+    var results = " AND (";
+    var orArr = [];
 
-    $.each( array, function(index, obj) {
-      CartoDbLib.userSelection += " OR " + CartoDbLib.addUnderscore(obj.text);
-      results += (obj.text + ", ")
-    })
+    $.each(array, function(index, obj) {
+      orArr.push(" type = '" + CartoDbLib.addUnderscore(obj.text) + "'");
+    });
+
+    results += orArr.join(" OR ");
+    results += ')';
+    CartoDbLib.userSelection += results;
 
     return results
   },
