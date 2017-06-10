@@ -201,7 +201,7 @@ var CartoDbLib = {
       website: ''
     };
 
-    if ((CartoDbLib.whereClause == ' WHERE the_geom is not null AND clerks is null ') || (CartoDbLib == ' WHERE clerks is null ')) {
+    if (CartoDbLib == ' WHERE clerks is null ') {
       CartoDbLib.whereClause = '';
     }
 
@@ -406,7 +406,7 @@ var CartoDbLib = {
     var facilityTypeResults = CartoDbLib.userSelectSQL(typeUserSelections);
     CartoDbLib.typeSelections = facilityTypeResults;
 
-    CartoDbLib.whereClause = " WHERE the_geom is not null AND clerks is null ";
+    CartoDbLib.whereClause = " WHERE clerks is null ";
 
     if (CartoDbLib.geoSearch != "") {
       CartoDbLib.whereClause += " AND " + CartoDbLib.geoSearch;
