@@ -8,12 +8,49 @@ permalink: /locations/
   <div class='container'>
     <div class='col-md-12'>
       <h2>Locations saved</h2>
-       <table class="table list-table table-striped">
+        <script id="locations-div-template" type="text/x-handlebars-template">
+          {% raw %}
+          {{#each this}}
+          <tr>
+            <td>
+              <span class="hidden given-id">{{id}}</span>
+              <span class="facility-name">{{name}}</span><br>
+            {{#if address}}
+              <span class='hidden-sm hidden-md hidden-lg'>
+                <i class='fa fa-map-marker'></i>  {{address}}<br>
+                <span class="modal-directions"><a href="http://maps.google.com/?q={{address}}" target="_blank">GET DIRECTIONS</a></span><br>
+                {{#if phone}}
+                <i class="fa fa-phone"></i> {{phone}}<br>
+                {{/if}}
+                <span class="facility-site">
+                  <a href='{{website}}' target='_blank'><i class='fa fa-reply' aria-hidden='true'></i> Website</a>
+                </span><br>
+                <a class='remove-location btn-sm btn-reset'><i class='fa fa-times' aria-hidden='true'></i> Remove</a></td>
+              </span>
+            </td>
+            <td class="hidden-xs" style="width: 300px"><i class="fa fa-map-marker" aria-hidden="true"></i>
+              <span class="facility-address">{{address}}</span><br>
+              <span class="modal-directions"><a href="http://maps.google.com/?q={{address}}" target="_blank">GET DIRECTIONS</a></span><br>
+            {{else}}
+            </td>
+            <td class="hidden-xs" style="width: 300px">
+            {{/if}}
+            {{#if phone}}
+            <i class="fa fa-phone"></i> <span class="facility-phone">{{phone}}</span><br>
+            {{/if}}
+            <span class="facility-site">
+              <a href='{{website}}' target='_blank'><i class='fa fa-reply' aria-hidden='true'></i> Website</a>
+            </span>
+            <td class='hidden-xs no-wrap'><a class='remove-location btn-sm btn-reset'><i class='fa fa-times' aria-hidden='true'></i> Remove</a></td>
+          </tr>
+          {{/each}}
+          {% endraw %}
+        </script>
+      <table class="table list-table table-striped">
         <thead>
           <tr>
             <th>Facility</th>
-            <th class='hidden-xs'>Hours</th>
-            <th>Contact</th>
+            <th class="hidden-xs">Contact</th>
             <th class='hidden-xs'></th>
           </tr>
         </thead>

@@ -1,24 +1,26 @@
 body {
-  font-family: 'Lato', sans-serif;
+  font-family: 'Open Sans', sans-serif;
   font-size: 15px;
 }
 
-h1,h2,h3 { line-height:inherit; font-family: 'Lato', sans-serif;}
+h1, h2, h3, .navbar-brand {
+  font-family: 'Roboto Slab', sans-serif;
+}
 
 h5 { margin-top: 0px ; margin-bottom: 2px; }
 
-a { color: #FF3A41; }
+a { color: #F57E20; }
 
 a:hover {
   text-decoration: none;
-  color: #5187BB;
+  color: #134fb8;
 }
 
 th, td { padding: 8px; }
 
 p {
-  font-size: 18px;
-  line-height: 1.6;
+  font-size: 16px;
+  line-height: 1.4;
 }
 
 img {
@@ -32,9 +34,9 @@ img {
 }
 
 .navbar-inverse {
-  background-color: #0A5193;
-  border-color: #0A5193;
-  font-family: 'Lato', sans-serif;
+  background-color: #5187BB;
+  border-color: #5187BB;
+  font-family: 'Open Sans', sans-serif;
 }
 
 .navbar-inverse .navbar-brand, .navbar-inverse .navbar-nav > li > a {
@@ -71,7 +73,6 @@ img {
 @media all and (max-width: 480px) {
   .navbar-brand {
       font-size: 26px;
-      padding-bottom: 20%;
       line-height: 1em;
   }
 }
@@ -105,18 +106,90 @@ img {
 
 .label { margin-right: 0.5em; }
 
-.select2-container {
-   width: 94% !important;
+
+/*
+Checkbox styling adapted from:
+https://kyusuf.com/post/completely-css-custom-checkbox-radio-buttons-and-select-boxes
+*/
+
+.checkbox label.control {
+  font-size: 18px;
+	position: relative;
+	display: block;
+	margin-bottom: 10px;
+	padding-left: 30px;
+	cursor: pointer;
+}
+.control input {
+	position: absolute;
+	z-index: -1;
+	opacity: 0;
+}
+.check {
+	position: absolute;
+	top: 2px;
+	left: 0;
+	width: 20px;
+	height: 20px;
+	background: #e6e6e6;
+  border: 1px solid #b5b5b5;
+  border-radius: 3px;
+}
+/* Hover and focus states */
+.control:hover input ~ .check,
+.control input:focus ~ .check {
+	background: #ccc;
+}
+/* Checked state */
+.control input:checked ~ .check {
+  background-color: #5187BB;
+}
+/* Hover state whilst checked */
+.control:hover input:not([disabled]):checked ~ .check,
+.control input:checked:focus ~ .check {
+  background-color: #5187BB;
+}
+/* Disabled state */
+.control input:disabled ~ .check {
+	pointer-events: none;
+	opacity: .6;
+	background: #e6e6e6;
+}
+/* Check mark */
+.check:after {
+	position: absolute;
+	display: none;
+	content: '';
+}
+/* Show check mark */
+.control input:checked ~ .check:after {
+	display: block;
+}
+/* Checkbox tick */
+.control .check:after {
+	top: 2px;
+	left: 7px;
+	width: 5px;
+	height: 10px;
+	transform: rotate(45deg);
+	border: solid #fff;
+	border-width: 0 2px 2px 0;
+}
+/* Disabled tick colour */
+.control input:disabled ~ .check:after {
+	border-color: #7b7b7b;
 }
 
-.select2-container--default .select2-selection--multiple {
-    border-bottom-left-radius: 0 !important;
-    border-top-left-radius: 0 !important;
-    border-left: 0;
+#filter-heading a {
+  color: #5187BB;
 }
-
-.select2-container--default .select2-selection--multiple .select2-selection__choice {
-  margin-top: 2%;
+#filter-heading a[aria-expanded="false"] h4 span i.fa-chevron-down {
+  transform: rotate(0deg);
+  transition: transform 0.2s linear;
+}
+#filter-heading a[aria-expanded="true"] h4 span i.fa-chevron-down {
+  transform: rotate(-180deg);
+  transition: transform 0.2s linear;
 }
 
 .m-top-sm { margin-top: 10px; }
@@ -132,8 +205,8 @@ img {
 
 .btn-search {
   color: #ffffff;
-  background-color: #FF3A41;
-  border-color: #FF3A41;
+  background-color: #F57E20;
+  border-color: #F57E20;
 }
 
 .btn-reset, .label {
@@ -169,7 +242,7 @@ img {
 }
 
 .info {
-  font-family: 'Lato', sans-serif;
+  font-family: 'Open Sans', sans-serif;
   padding: 6px 8px;
   background: #ffffff;
   box-shadow: 0 0 15px rgba(0,0,0,0.2);
@@ -182,7 +255,7 @@ img {
 }
 
 .results-count {
-  font-family: 'Lato', sans-serif;
+  font-family: 'Open Sans', sans-serif;
   padding: 6px 8px;
   background: #ffffff;
   box-shadow: 0 0 15px rgba(0,0,0,0.2);
@@ -221,7 +294,7 @@ img {
   color: #ffffff;
   background: #7C7F83;
   border: solid 1px #7C7F83;
-  font-family: 'Lato', sans-serif;
+  font-family: 'Open Sans', sans-serif;
 }
 
 .badge {
@@ -304,7 +377,10 @@ div#modal-image { padding: 0; }
 }
 
 @media (max-width: 768px) {
-      .get-sm {
-              text-align: center;
-       }
-    }
+  .get-sm {
+    text-align: center;
+  }
+  .navbar-brand {
+    padding-top: 20px;
+  }
+}

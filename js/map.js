@@ -55,14 +55,12 @@ $(function() {
       }
   });
 
-  $('select').select2();
-
+  // Render filters template
   var facility_type_data = makeSelectData(facilityTypeOptions);
-
-  $(".data-array-type").select2({
-    placeholder: "Facility type",
-    data: facility_type_data
-  });
+  var source = $('#filter-option-template').html();
+  var template = Handlebars.compile(source);
+  var result = template(facility_type_data);
+  $('#filters').html(result);
 
   $("#btnSave").on('click', function() {
     CartoDbLib.addCookieValues();
@@ -84,7 +82,7 @@ $(function() {
   $(".list-table").on('click', '.fa-star-o', function() {
     var tr = ($(this).parents().eq(1));
     var address = tr.find("span.facility-address").text();
-    var id_nbr = tr.find("span#given-id").text();
+    var id_nbr = tr.find("span.given-id").text();
     $(this).removeClass('fa-star-o');
     $(this).addClass('fa-star');
     $(this).removeAttr('data-original-title');
@@ -108,7 +106,7 @@ $(function() {
 
   $(".list-table").on('click', '.fa-star', function() {
     var tr = ($(this).parents().eq(1));
-    var id_nbr = tr.find('#given-id').text();
+    var id_nbr = tr.find('.given-id').text();
     $(this).removeClass('fa-star');
     $(this).addClass('fa-star-o');
     CartoDbLib.deleteSavedFacility(id_nbr);
@@ -118,35 +116,41 @@ $(function() {
     window.print();
   });
 
+  $("#download-guide").on("click", function() {
+    var source = $('#modal-guide-template').html();
+    var template = Handlebars.compile(source);
+    var result = template({});
+    $('#modal-pop').html(result);
+    $('#modal-pop').modal();
+  });
 });
 
 function makeSelectData(array) {
-  data_arr = []
+  data_arr = [];
   for(var i = 0; i < array.length; i++) {
     data_arr.push({ id: i, text: CartoDbLib.formatText(array[i]) })
   }
-
-  return data_arr
+  return data_arr;
 };
 
-function makeSelectDataGroups(insuranceArray) {
-
-  data_arr_generic = []
-  data_arr_specific = []
-  for(var i = 0; i < insuranceArray.length; i++) {
-    if (insuranceArray[i].includes('medicaid_')) {
-      data_arr_specific.push({ id: i, text: CartoDbLib.formatText(insuranceArray[i]) })
-    }
-    else {
-      data_arr_generic.push({ id: i, text: CartoDbLib.formatText(insuranceArray[i]) })
-    }
-  }
-
-   return [
-      {text: "Insurance type",
-      children: data_arr_generic},
-      {text: "Specific plans (Medicaid only)",
-      children: data_arr_specific},
-    ]
-
-};
+// function makeSelectDataGroups(insuranceArray) {
+//
+//   data_arr_generic = []
+//   data_arr_specific = []
+//   for(var i = 0; i < insuranceArray.length; i++) {
+//     if (insuranceArray[i].includes('medicaid_')) {
+//       data_arr_specific.push({ id: i, text: CartoDbLib.formatText(insuranceArray[i]) })
+//     }
+//     else {
+//       data_arr_generic.push({ id: i, text: CartoDbLib.formatText(insuranceArray[i]) })
+//     }
+//   }
+//
+//    return [
+//       {text: "Insurance type",
+//       children: data_arr_generic},
+//       {text: "Specific plans (Medicaid only)",
+//       children: data_arr_specific},
+//     ]
+//
+// };
