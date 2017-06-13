@@ -411,7 +411,7 @@ var CartoDbLib = {
     if (CartoDbLib.geoSearch != "") {
       CartoDbLib.whereClause += " AND " + CartoDbLib.geoSearch;
     }
-    else if (CartoDbLib.userSelection != "") {
+    if (CartoDbLib.userSelection != "") {
       CartoDbLib.whereClause += " AND " + CartoDbLib.userSelection;
     }
   },
@@ -450,7 +450,7 @@ var CartoDbLib = {
 
   addIcon: function() {
     CartoDbLib.centerMark = new L.Marker(CartoDbLib.currentPinpoint, { icon: (new L.Icon({
-            iconUrl: '/img/blue-pushpin.png',
+            iconUrl: baseUrl + '/img/blue-pushpin.png',
             iconSize: [32, 32],
             iconAnchor: [10, 32]
     }))});
