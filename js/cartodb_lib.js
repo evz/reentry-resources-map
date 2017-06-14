@@ -374,13 +374,13 @@ var CartoDbLib = {
       return "";
     }
     var results = " (";
-    var andArr = [];
+    var orArr = [];
 
     $.each(array, function(index, obj) {
-      andArr.push(" " + CartoDbLib.addUnderscore(obj) + " is true");
+      orArr.push(" " + CartoDbLib.addUnderscore(obj) + " is true");
     });
 
-    results += andArr.join(" AND ");
+    results += orArr.join(" OR ");
     results += ')';
     CartoDbLib.userSelection += results;
 
