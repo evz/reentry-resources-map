@@ -193,13 +193,6 @@ var CartoDbLib = {
   renderList: function() {
     var sql = new cartodb.SQL({ user: CartoDbLib.userName });
     var results = $('#results-list');
-    var elements = {
-      facility: '',
-      address: '',
-      hours: '',
-      phone: '',
-      website: ''
-    };
 
     if (CartoDbLib == ' WHERE clerks is null ') {
       CartoDbLib.whereClause = '';
@@ -214,6 +207,7 @@ var CartoDbLib = {
           results.append("<p class='no-results'>No results. Please broaden your search.</p>");
         }
         else {
+          CartoDbLib.createSearchHeader(listData.rows.length);
           for (idx in obj_array) {
             if (obj_array[idx].website != "") {
               if (!obj_array[idx].website.match(/^http/)) {
@@ -366,6 +360,34 @@ var CartoDbLib = {
       newText = "_" + newText
     }
     return newText.toLowerCase();
+  },
+
+  createSearchHeader: function(count) {
+    var resultObj = {count: count};
+    var radiusMap = {
+      400: "2 blocks",
+      805: "1/2 mile",
+      1610: "1 mile",
+      3220: "2 miles",
+      8050: "5 miles"
+    };
+
+    var address = $("#search-address").val();
+    if (address != "") {
+      resultObj.location = {
+        address: address,
+        distance: radiusMap[CartoDbLib.radius]
+      }
+    }
+    var userSelections = $.map($('.filter-option:checked'), function(obj, i) {
+      return obj.value;
+    });
+    resultObj.categories = userSelections.length ? userSelections.join(", ") : false;
+
+    var source = $('#search-header-template').html();
+    var template = Handlebars.compile(source);
+    var result = template(resultObj);
+    $('#search-header').html(result);
   },
 
   // Call this in createSearch, when creating SQL queries from user selection.
@@ -581,14 +603,6 @@ var CartoDbLib = {
 
   renderSavedFacilities: function() {
     $("#locations-div").empty();
-
-    var elements = {
-      facility: '',
-      address: '',
-      hours: '',
-      phone: '',
-      website: ''
-    };
 
     var objArray = JSON.parse($.cookie("location"));
 

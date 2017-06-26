@@ -81,9 +81,11 @@ layout: default
           <i class="fa fa-star-o" aria-hidden="true" data-toggle="tooltip" title="Save location"></i>
           {{/if}}
         </td>
-        <td><span class="facility-name">{{name}}</span><br>
+        <td>
+          <span class="facility-name">{{name}}</span><br>
+          <span class="facility-notes">{{notes}}</span><br>
         {{#if address}}
-          <span class='hidden-sm hidden-md hidden-lg'>
+          <span class='hidden-sm hidden-md hidden-lg mobile-info'>
             <i class='fa fa-map-marker'></i>  {{address}}<br>
             <span class="modal-directions"><a href="http://maps.google.com/?q={{address}}" target="_blank">GET DIRECTIONS</a></span><br>
             {{#if phone}}
@@ -113,7 +115,15 @@ layout: default
       {% endraw %}
     </script>
     <div id="listCanvas" style="display: block">
-      <h2 class='list-header hidden-xs'>Search results</h2>
+      <!-- <h2 class='list-header hidden-xs'>Search results</h2> -->
+      <h4 id="search-header" class='list-header hidden-xs'>Search results</h4>
+      {% raw %}
+      <script id="search-header-template" type="text/x-handlebars-template">
+        {{count}} search results {{#if location}} within {{location.distance}} of {{location.address}}
+        {{else}} in Illinois {{/if}} for {{#if categories}} {{categories}}
+        {{else}} all categories {{/if}}
+      </script>
+      {% endraw %}
       <table class="table list-table table-striped">
         <thead>
           <tr>

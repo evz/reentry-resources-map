@@ -354,6 +354,17 @@ https://kyusuf.com/post/completely-css-custom-checkbox-radio-buttons-and-select-
   margin-top: .15em;
 }
 
+.facility-name {
+  font-weight: bold;
+  text-decoration: underline;
+}
+.facility-notes {
+  font-size: 14px;
+}
+.mobile-info {
+  margin-top: 15px;
+  display: block;
+}
 .facility-name:hover, .locate-name:hover {
   color: #7F7F7F;
 }
