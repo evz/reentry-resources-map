@@ -375,7 +375,7 @@ var CartoDbLib = {
     var address = $("#search-address").val();
     if (address != "") {
       resultObj.location = {
-        address: address,
+        address: address.split(",").slice(0, 2).join(", "),
         distance: radiusMap[CartoDbLib.radius]
       }
     }
