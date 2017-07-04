@@ -216,6 +216,9 @@ var CartoDbLib = {
             }
             obj_array[idx].cookie = CartoDbLib.checkCookieDuplicate(obj_array[idx].id) == false;
           }
+          obj_array = obj_array.sort(function(a, b) {
+            return (a.address===null)-(b.address===null) || -(a.address>b.address)||+(a.address<b.address);
+          });
           var source = $('#results-list-template').html();
           var template = Handlebars.compile(source);
           var result = template(obj_array);
@@ -414,7 +417,9 @@ var CartoDbLib = {
     var address = $("#search-address").val();
 
     if (CartoDbLib.currentPinpoint != null && address != '') {
-      CartoDbLib.geoSearch = "ST_DWithin(ST_SetSRID(ST_POINT(" + CartoDbLib.currentPinpoint[1] + ", " + CartoDbLib.currentPinpoint[0] + "), 4326)::geography, the_geom::geography, " + CartoDbLib.radius + ")";
+      CartoDbLib.geoSearch = "ST_DWithin(ST_SetSRID(ST_POINT(" + CartoDbLib.currentPinpoint[1] +
+        ", " + CartoDbLib.currentPinpoint[0] + "), 4326)::geography, the_geom::geography, " +
+        CartoDbLib.radius + ") OR the_geom IS NULL";
     }
     else {
       CartoDbLib.geoSearch = ''
