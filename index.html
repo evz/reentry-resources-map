@@ -42,10 +42,20 @@ layout: default
         </div>
         <script id="filter-option-template" type="text/x-handlebars-template">
           {% raw %}
-          {{#each this}}
+          {{#each categories}}
           <label class="control">
             {{text}}
-            <input class="filter-option" type="checkbox" id="{{id}}" value="{{text}}">
+            <input class="filter-option category" type="checkbox" id="{{id}}" value="{{text}}">
+            <div class="check"></div>
+          </label>
+          {{/each}}
+          <h4 class="panel-title restriction-filter">
+            <span>Don't Show Me</span>
+          </h4>
+          {{#each restrictions}}
+          <label class="control">
+            {{text}}
+            <input class="filter-option restriction" type="checkbox" id="{{id}}" value="{{text}}">
             <div class="check"></div>
           </label>
           {{/each}}
@@ -82,8 +92,25 @@ layout: default
           {{/if}}
         </td>
         <td>
-          <span class="facility-name">{{name}}</span><br>
+          <span class="facility-name">{{name}}</span>
+          {{#if icons}}
+            {{#each icons}}
+              <i class="fa {{this}}"></i>
+            {{/each}}
+          {{/if}}
+          <br>
           <span class="facility-notes">{{notes}}</span><br>
+          {{#if flags}}
+          <br>
+          <span class="facility-flags"><strong>Flags</strong>:
+          {{#each flags}}
+             {{#if icon}}
+             <i class="fa {{icon}}"></i>
+             {{/if}}
+             {{flag}}
+          {{/each}}
+          </span><br>
+          {{/if}}
         {{#if address}}
           <span class='hidden-sm hidden-md hidden-lg mobile-info'>
             <i class='fa fa-map-marker'></i>  {{address}}<br>
@@ -120,7 +147,7 @@ layout: default
       <script id="search-header-template" type="text/x-handlebars-template">
         {{count}} search results {{#if location}} within {{location.distance}} of {{location.address}}
         {{else}} in Illinois {{/if}} for {{#if categories}} {{categories}}
-        {{else}} all categories {{/if}}
+        {{else}} all categories {{/if}} {{#if restrictions}} not including {{restrictions}} {{/if}}
       </script>
       {% endraw %}
       <table class="table list-table table-striped">

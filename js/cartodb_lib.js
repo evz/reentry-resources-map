@@ -1,4 +1,38 @@
-var facilityTypeOptions = ["reentry", "housing", "food", "employment", "health", "family_services", "community_assistance", "legal", "veterans"];
+var facilityTypeOptions = [
+  "reentry",
+  "housing",
+  "food",
+  "employment",
+  "health",
+  "family_services",
+  "community_assistance",
+  "legal",
+  "veterans"
+];
+var restrictionOptions = [
+  "men_only",
+  "women_only"
+];
+var flagOptions = [
+  "men_only",
+  "women_only",
+  "women_children_only",
+  "no_sex_offenders",
+  "hiv_aids",
+  "substance_free",
+  "parolees",
+  "lgbtq_only"
+];
+var iconMap = {
+  "housing": "fa-home",
+  "food": "icon-food",
+  "health": "fa-heartbeat",
+  "legal": "fa-gavel",
+  "family_services": "fa-users",
+  "women_only": "fa-female",
+  "men_only": "fa-male",
+  "women_children_only": "fa-child"
+}
 
 var CartoDbLib = CartoDbLib || {};
 var CartoDbLib = {
@@ -16,7 +50,7 @@ var CartoDbLib = {
   userSelection: '',
   radius: '',
   resultsCount: 0,
-  fields : "id, address, name, website, phone, hours, notes, restrictions, " + facilityTypeOptions.join(", "),
+  fields : "id, address, name, website, phone, hours, notes, restrictions, " + facilityTypeOptions.join(", ") + ", " + flagOptions.join(", "),
 
   initialize: function(){
     //reset filters
@@ -214,6 +248,8 @@ var CartoDbLib = {
                 obj_array[idx].website = "http://" + obj_array[idx].website;
               }
             }
+            obj_array[idx].icons = CartoDbLib.getIcons(obj_array[idx]);
+            obj_array[idx].flags = CartoDbLib.getFlags(obj_array[idx]);
             obj_array[idx].cookie = CartoDbLib.checkCookieDuplicate(obj_array[idx].id) == false;
           }
           obj_array = obj_array.sort(function(a, b) {
@@ -345,7 +381,10 @@ var CartoDbLib = {
   formatText: function(text) {
     // Format text with acronyms.
     var lookup = {
-      "reentry": "Re-entry"
+      "reentry": "Re-entry",
+      "women_children_only": "Women and Children Only",
+      "hiv_aids": "HIV-AIDS",
+      "lgbtq_only": "LGBTQ Only"
     }
     if (text in lookup) {
       var capitalText = lookup[text]
@@ -382,10 +421,14 @@ var CartoDbLib = {
         distance: radiusMap[CartoDbLib.radius]
       }
     }
-    var userSelections = $.map($('.filter-option:checked'), function(obj, i) {
+    var catSelections = $.map($('.filter-option.category:checked'), function(obj, i) {
       return obj.value;
     });
-    resultObj.categories = userSelections.length ? userSelections.join(", ") : false;
+    var resSelections = $.map($('.filter-option.restriction:checked'), function(obj, i) {
+      return obj.value;
+    });
+    resultObj.categories = catSelections.length ? catSelections.join(", ") : false;
+    resultObj.restrictions = resSelections.length ? resSelections.join(", ") : false;
 
     var source = $('#search-header-template').html();
     var template = Handlebars.compile(source);
@@ -402,7 +445,11 @@ var CartoDbLib = {
     var orArr = [];
 
     $.each(array, function(index, obj) {
-      orArr.push(" " + CartoDbLib.addUnderscore(obj) + " is true");
+      var suffix = " is true";
+      if (flagOptions.indexOf(CartoDbLib.addUnderscore(obj)) !== -1) {
+        suffix = " is null";
+      }
+      orArr.push(" " + CartoDbLib.addUnderscore(obj) + suffix);
     });
 
     results += orArr.join(" OR ");
@@ -441,6 +488,32 @@ var CartoDbLib = {
     if (CartoDbLib.userSelection != "") {
       CartoDbLib.whereClause += " AND " + CartoDbLib.userSelection;
     }
+  },
+
+  getIcons: function(obj) {
+    var iconArr = [];
+    $.each(facilityTypeOptions, function( index, cat ) {
+      if (obj[cat] == true) {
+        if (iconMap.hasOwnProperty(cat)) {
+          iconArr.push(iconMap[cat]);
+        }
+      }
+    });
+    return iconArr;
+  },
+
+  getFlags: function(obj) {
+    var flagArr = [];
+    $.each(flagOptions, function( index, flag ) {
+      if (obj[flag] == true) {
+        var flagObj = {flag: CartoDbLib.formatText(flag)};
+        if (iconMap.hasOwnProperty(flag)) {
+          flagObj.icon = iconMap[flag];
+        }
+        flagArr.push(flagObj);
+      }
+    });
+    return flagArr;
   },
 
   getClerk: function(addr) {

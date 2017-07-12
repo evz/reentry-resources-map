@@ -387,6 +387,12 @@ div#modal-image { padding: 0; }
         0px 0px 0px 6px rgba(0,0,0,0.2);
 }
 
+.restriction-filter {
+  margin-top: 25px;
+  margin-bottom: 10px;
+  color: #5187BB;
+}
+
 @media (max-width: 768px) {
   .get-sm {
     text-align: center;

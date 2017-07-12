@@ -56,10 +56,13 @@ $(function() {
   });
 
   // Render filters template
-  var facility_type_data = makeSelectData(facilityTypeOptions);
+  var filterData = {
+    categories: makeSelectData(facilityTypeOptions),
+    restrictions: makeSelectData(restrictionOptions)
+  };
   var source = $('#filter-option-template').html();
   var template = Handlebars.compile(source);
-  var result = template(facility_type_data);
+  var result = template(filterData);
   $('#filters').html(result);
 
   $("#btnSave").on('click', function() {
