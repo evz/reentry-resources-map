@@ -24,14 +24,16 @@ var flagOptions = [
   "lgbtq_only"
 ];
 var iconMap = {
-  "housing": "fa-home",
+  "housing": "icon-home",
   "food": "icon-food",
-  "health": "fa-heartbeat",
-  "legal": "fa-gavel",
-  "family_services": "fa-users",
-  "women_only": "fa-female",
-  "men_only": "fa-male",
-  "women_children_only": "fa-child"
+  "health": "icon-heartbeat",
+  "legal": "icon-gavel",
+  "employment": "icon-work",
+  "veterans": "icon-vets",
+  "family_services": "icon-users",
+  "women_only": "icon-female",
+  "men_only": "icon-male",
+  "women_children_only": "icon-child"
 }
 
 var CartoDbLib = CartoDbLib || {};
@@ -179,8 +181,8 @@ var CartoDbLib = {
       CartoDbLib.createSQL();
       $.address.parameter('type', encodeURIComponent(CartoDbLib.typeSelections));
 
-      CartoDbLib.renderMap();
       CartoDbLib.renderList();
+      CartoDbLib.renderMap();
       CartoDbLib.getResults();
     }
   },
@@ -259,8 +261,8 @@ var CartoDbLib = {
           var template = Handlebars.compile(source);
           var result = template(obj_array);
           $('#results-list').html(result);
-          $('.fa-star-o').tooltip();
-          $('.fa-star').tooltip();
+          $('.icon-star-o').tooltip();
+          $('.icon-star').tooltip();
         }
     }).done(function(listData) {
         $(".facility-name").on("click", function() {
@@ -324,8 +326,8 @@ var CartoDbLib = {
     $('#modal-pop').modal();
 
     // Add tooltip.
-    $('.fa-star-o').tooltip();
-    $('.fa-star').tooltip();
+    $('.icon-star-o').tooltip();
+    $('.icon-star').tooltip();
   },
 
   clearSearch: function(){
@@ -393,7 +395,7 @@ var CartoDbLib = {
       var capitalText = text.charAt(0).toUpperCase() + text.slice(1);
     }
 
-    return capitalText.replace(/_/g, ' ')
+    return capitalText.replace(/_/g, ' ');
   },
 
   addUnderscore: function(text) {
@@ -609,7 +611,7 @@ var CartoDbLib = {
           text += obj.type;
         }
 
-        $('.saved-searches').append('<li><a href="#" class="remove-icon"><i class="fa fa-times"></i></a><a class="saved-search" href="#"> ' + text + '<span class="hidden">' + obj.path + '</span></a></li>');
+        $('.saved-searches').append('<li><a href="#" class="remove-icon"><i class="icon-times-circle"></i></a><a class="saved-search" href="#"> ' + text + '<span class="hidden">' + obj.path + '</span></a></li>');
       });
     }
   },

@@ -183,11 +183,11 @@ https://kyusuf.com/post/completely-css-custom-checkbox-radio-buttons-and-select-
 #filter-heading a {
   color: #5187BB;
 }
-#filter-heading a[aria-expanded="false"] h4 span i.fa-chevron-down {
+#filter-heading a[aria-expanded="false"] h4 span i.icon-chevron-down {
   transform: rotate(0deg);
   transition: transform 0.2s linear;
 }
-#filter-heading a[aria-expanded="true"] h4 span i.fa-chevron-down {
+#filter-heading a[aria-expanded="true"] h4 span i.icon-chevron-down {
   transform: rotate(-180deg);
   transition: transform 0.2s linear;
 }
@@ -350,7 +350,7 @@ https://kyusuf.com/post/completely-css-custom-checkbox-radio-buttons-and-select-
 
 }
 
-.fa-times-circle {
+.icon-times-circle {
   margin-top: .15em;
 }
 
@@ -400,4 +400,131 @@ div#modal-image { padding: 0; }
   .navbar-brand {
     padding-top: 20px;
   }
+}
+
+/* ICOMOON */
+@font-face {
+  font-family: 'icomoon';
+  src:  url('fonts/icomoon.eot?fs0zph');
+  src:  url('fonts/icomoon.eot?fs0zph#iefix') format('embedded-opentype'),
+    url('fonts/icomoon.ttf?fs0zph') format('truetype'),
+    url('fonts/icomoon.woff?fs0zph') format('woff'),
+    url('fonts/icomoon.svg?fs0zph#icomoon') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+[class^="icon-"], [class*=" icon-"] {
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: 'icomoon' !important;
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-vets:before {
+  content: "\e902";
+}
+.icon-work:before {
+  content: "\e901";
+}
+.icon-counseling:before {
+  content: "\e900";
+}
+.icon-plus:before {
+  content: "\f067";
+}
+.icon-search:before {
+  content: "\f002";
+}
+.icon-star:before {
+  content: "\f005";
+}
+.icon-star-o:before {
+  content: "\f006";
+}
+.icon-home:before {
+  content: "\f015";
+}
+.icon-file-o:before {
+  content: "\f016";
+}
+.icon-repeat:before {
+  content: "\f01e";
+}
+.icon-rotate-right:before {
+  content: "\f01e";
+}
+.icon-print:before {
+  content: "\f02f";
+}
+.icon-list:before {
+  content: "\f03a";
+}
+.icon-map-marker:before {
+  content: "\f041";
+}
+.icon-plus-circle:before {
+  content: "\f055";
+}
+.icon-times-circle:before {
+  content: "\f057";
+}
+.icon-info-circle:before {
+  content: "\f05a";
+}
+.icon-times-circle-o:before {
+  content: "\f05c";
+}
+.icon-calendar:before {
+  content: "\f073";
+}
+.icon-chevron-down:before {
+  content: "\f078";
+}
+.icon-phone:before {
+  content: "\f095";
+}
+.icon-group:before {
+  content: "\f0c0";
+}
+.icon-users:before {
+  content: "\f0c0";
+}
+.icon-gavel:before {
+  content: "\f0e3";
+}
+.icon-legal:before {
+  content: "\f0e3";
+}
+.icon-clipboard:before {
+  content: "\f0ea";
+}
+.icon-paste:before {
+  content: "\f0ea";
+}
+.icon-mail-reply:before {
+  content: "\f112";
+}
+.icon-reply:before {
+  content: "\f112";
+}
+.icon-female:before {
+  content: "\f182";
+}
+.icon-male:before {
+  content: "\f183";
+}
+.icon-child:before {
+  content: "\f1ae";
+}
+.icon-heartbeat:before {
+  content: "\f21e";
 }

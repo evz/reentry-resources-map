@@ -25,7 +25,7 @@ $(function() {
       CartoDbLib.doSearch();
     }
     else {
-      $('#btnViewMode').html("<i class='fa fa-map-marker'></i> Map View");
+      $('#btnViewMode').html("<i class='icon-map-marker'></i> Map View");
       $('#listCanvas').show();
       $('#mapCanvas').hide();
 
@@ -35,12 +35,12 @@ $(function() {
 
   $('#btnViewMode').click(function(){
     if ($('#mapCanvas').is(":visible")){
-      $('#btnViewMode').html("<i class='fa fa-map-marker'></i> Map View");
+      $('#btnViewMode').html("<i class='icon-map-marker'></i> Map View");
       $('#listCanvas').show();
       $('#mapCanvas').hide();
     }
     else {
-      $('#btnViewMode').html("<i class='fa fa-list'></i> List View");
+      $('#btnViewMode').html("<i class='icon-list'></i> List View");
       $('#listCanvas').hide();
       $('#mapCanvas').show();
       CartoDbLib.map.invalidateSize();
@@ -82,22 +82,22 @@ $(function() {
     $(this).parent().remove();
   });
 
-  $(".list-table").on('click', '.fa-star-o', function() {
+  $(".list-table").on('click', '.icon-star-o', function() {
     var tr = ($(this).parents().eq(1));
     var address = tr.find("span.facility-address").text();
     var id_nbr = tr.find("span.given-id").text();
-    $(this).removeClass('fa-star-o');
-    $(this).addClass('fa-star');
+    $(this).removeClass('icon-star-o');
+    $(this).addClass('icon-star');
     $(this).removeAttr('data-original-title');
     $(this).attr('title', 'Location saved');
     CartoDbLib.addFacilityCookie(address, id_nbr);
   });
 
-  $(".modal-header").on('click', '.fa-star-o', function() {
+  $(".modal-header").on('click', '.icon-star-o', function() {
     var address = $("#modal-address").text();
     var id_nbr = $.address.parameter('modal_id');
-    $(this).removeClass('fa-star-o');
-    $(this).addClass('fa-star');
+    $(this).removeClass('icon-star-o');
+    $(this).addClass('icon-star');
     $(this).removeAttr('data-original-title');
     $(this).attr('title', 'Location saved');
     CartoDbLib.addFacilityCookie(address, id_nbr);
@@ -107,11 +107,11 @@ $(function() {
     $.address.parameter('modal_id', null)
   });
 
-  $(".list-table").on('click', '.fa-star', function() {
+  $(".list-table").on('click', '.icon-star', function() {
     var tr = ($(this).parents().eq(1));
     var id_nbr = tr.find('.given-id').text();
-    $(this).removeClass('fa-star');
-    $(this).addClass('fa-star-o');
+    $(this).removeClass('icon-star');
+    $(this).addClass('icon-star-o');
     CartoDbLib.deleteSavedFacility(id_nbr);
   });
 
