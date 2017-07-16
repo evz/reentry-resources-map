@@ -4,21 +4,27 @@ describe "page", type: :feature, js: true do
     before(:each) { visit '/' }
 
     it "has a page title" do
-      # binding.pry # test will pause here
-      expect(find('.navbar-brand').text).to eq('Probation Resources')
+      expect(find('.navbar-brand').text).to eq('Illinois Re-Entry Resources')
+    end
+
+    it "has a Download Guide" do
+      expect(find('#navbar ul li:nth-child(3)').text).to eq('Download Guide')
     end
 
     it "has an About" do
-      expect(find('#navbar ul li:nth-child(3)').text).to eq('About')
+      expect(find('#navbar ul li:nth-child(4)').text).to eq('About')
     end
 
-    it "has an Add a location" do
-      expect(find('#navbar ul li:nth-child(4)').text).to eq('Add a location')
+    it "has an Add location" do
+      expect(find('#navbar ul li:nth-child(5)').text).to eq('Add location')
     end
   end
 
   describe "map canvas" do
-    before(:each) { visit '/' }
+    before(:each) {
+      visit '/'
+      find('#btnViewMode', match: :first).click
+    }
 
     it "has a results div" do
       expect(page).to have_selector('.results-count', visible: true)
