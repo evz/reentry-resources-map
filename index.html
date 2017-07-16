@@ -111,24 +111,37 @@ layout: default
           {{/each}}
           </span><br>
           {{/if}}
-        {{#if address}}
-          <span class='hidden-sm hidden-md hidden-lg mobile-info'>
-            <i class='icon-map-marker'></i>  {{address}}<br>
-            <span class="modal-directions"><a href="http://maps.google.com/?q={{address}}" target="_blank">GET DIRECTIONS</a></span><br>
-            {{#if phone}}
-            <i class="icon-phone"></i> {{phone}}<br>
-            {{/if}}
-            <span class="facility-site">
-              <a href='{{website}}' target='_blank'><i class='icon-reply' aria-hidden='true'></i> Website</a>
+        {{#if online_only}}
+            <span class='hidden-sm hidden-md hidden-lg mobile-info'>
+              <span>Online Only</span><br>
+              <span class="facility-site">
+                <a href='{{website}}' target='_blank'><i class='icon-reply' aria-hidden='true'></i> Website</a>
+              </span>
             </span>
-          </span>
-        </td>
-        <td class="hidden-xs" style="width: 300px"><i class="icon-map-marker" aria-hidden="true"></i>
-          <span class="facility-address">{{address}}</span><br>
-          <span class="modal-directions"><a href="http://maps.google.com/?q={{address}}" target="_blank">GET DIRECTIONS</a></span><br>
+          </td>
+          <br>
+          <td class="hidden-xs" style="width: 300px">
+            Online Only<br>
         {{else}}
-        </td>
-        <td class="hidden-xs" style="width: 300px">
+          {{#if address}}
+            <span class='hidden-sm hidden-md hidden-lg mobile-info'>
+              <i class='icon-map-marker'></i>  {{address}}<br>
+              <span class="modal-directions"><a href="http://maps.google.com/?q={{address}}" target="_blank">GET DIRECTIONS</a></span><br>
+              {{#if phone}}
+              <i class="icon-phone"></i> {{phone}}<br>
+              {{/if}}
+              <span class="facility-site">
+                <a href='{{website}}' target='_blank'><i class='icon-reply' aria-hidden='true'></i> Website</a>
+              </span>
+            </span>
+          </td>
+          <td class="hidden-xs" style="width: 300px"><i class="icon-map-marker" aria-hidden="true"></i>
+            <span class="facility-address">{{address}}</span><br>
+            <span class="modal-directions"><a href="http://maps.google.com/?q={{address}}" target="_blank">GET DIRECTIONS</a></span><br>
+          {{else}}
+          </td>
+          <td class="hidden-xs" style="width: 300px">
+          {{/if}}
         {{/if}}
         {{#if phone}}
         <i class="icon-phone"></i> <span class="facility-phone">{{phone}}</span><br>

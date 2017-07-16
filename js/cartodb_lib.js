@@ -52,7 +52,7 @@ var CartoDbLib = {
   userSelection: '',
   radius: '',
   resultsCount: 0,
-  fields : "id, address, name, website, phone, hours, notes, restrictions, " + facilityTypeOptions.join(", ") + ", " + flagOptions.join(", "),
+  fields : "id, address, name, website, phone, hours, notes, restrictions, online_only, " + facilityTypeOptions.join(", ") + ", " + flagOptions.join(", "),
 
   initialize: function(){
     //reset filters
@@ -444,21 +444,30 @@ var CartoDbLib = {
       return "";
     }
     var results = " (";
-    var orArr = [];
+    var categoryArr = [];
+    var flagArr = [];
 
     $.each(array, function(index, obj) {
       var suffix = " is true";
-      if (flagOptions.indexOf(CartoDbLib.addUnderscore(obj)) !== -1) {
-        suffix = " is null";
+      if (flagOptions.indexOf(CartoDbLib.addUnderscore(obj)) === -1) {
+        categoryArr.push(" " + CartoDbLib.addUnderscore(obj) + suffix);
       }
-      orArr.push(" " + CartoDbLib.addUnderscore(obj) + suffix);
+      else {
+        suffix = " is null";
+        flagArr.push(" " + CartoDbLib.addUnderscore(obj) + suffix);
+      }
     });
 
-    results += orArr.join(" OR ");
+    results += categoryArr.join(" OR ");
     results += ')';
+
+    // Add flags with AND if specified
+    if (flagArr.length) {
+      results += " AND (" + flagArr.join(" AND ") + ")";
+    }
     CartoDbLib.userSelection += results;
 
-    return results
+    return results;
   },
 
   createSQL: function() {
