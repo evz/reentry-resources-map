@@ -45,6 +45,9 @@ layout: default
           {{#each categories}}
           <label class="control">
             {{text}}
+            {{#if icon}}
+            <i class="{{icon}}"></i>
+            {{/if}}
             <input class="filter-option category" type="checkbox" id="{{id}}" value="{{text}}">
             <div class="check"></div>
           </label>
@@ -55,6 +58,9 @@ layout: default
           {{#each restrictions}}
           <label class="control">
             {{text}}
+            {{#if icon}}
+            <i class="{{icon}}"></i>
+            {{/if}}
             <input class="filter-option restriction" type="checkbox" id="{{id}}" value="{{text}}">
             <div class="check"></div>
           </label>

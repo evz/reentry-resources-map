@@ -528,3 +528,9 @@ div#modal-image { padding: 0; }
 .icon-heartbeat:before {
   content: "\f21e";
 }
+.icon-cutlery:before {
+  content: "\f0f5";
+}
+.icon-food:before {
+  content: "\f0f5";
+}

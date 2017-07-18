@@ -34,7 +34,7 @@ var iconMap = {
   "women_only": "icon-female",
   "men_only": "icon-male",
   "women_children_only": "icon-child"
-}
+};
 
 var CartoDbLib = CartoDbLib || {};
 var CartoDbLib = {
@@ -443,7 +443,7 @@ var CartoDbLib = {
     if (array.length === 0) {
       return "";
     }
-    var results = " (";
+    var results = "";
     var categoryArr = [];
     var flagArr = [];
 
@@ -458,9 +458,9 @@ var CartoDbLib = {
       }
     });
 
-    results += categoryArr.join(" OR ");
-    results += ')';
-
+    if (categoryArr.length) {
+      results += " AND (" + categoryArr.join(" OR ") + ")";
+    }
     // Add flags with AND if specified
     if (flagArr.length) {
       results += " AND (" + flagArr.join(" AND ") + ")";
@@ -497,7 +497,7 @@ var CartoDbLib = {
       CartoDbLib.whereClause += " AND " + CartoDbLib.geoSearch;
     }
     if (CartoDbLib.userSelection != "") {
-      CartoDbLib.whereClause += " AND " + CartoDbLib.userSelection;
+      CartoDbLib.whereClause += CartoDbLib.userSelection;
     }
   },
 

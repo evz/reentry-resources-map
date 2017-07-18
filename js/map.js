@@ -131,29 +131,11 @@ $(function() {
 function makeSelectData(array) {
   data_arr = [];
   for(var i = 0; i < array.length; i++) {
-    data_arr.push({ id: i, text: CartoDbLib.formatText(array[i]) })
+    var obj = {id: i, text: CartoDbLib.formatText(array[i])};
+    if (iconMap.hasOwnProperty(array[i])) {
+      obj.icon = iconMap[array[i]];
+    }
+    data_arr.push(obj);
   }
   return data_arr;
 };
-
-// function makeSelectDataGroups(insuranceArray) {
-//
-//   data_arr_generic = []
-//   data_arr_specific = []
-//   for(var i = 0; i < insuranceArray.length; i++) {
-//     if (insuranceArray[i].includes('medicaid_')) {
-//       data_arr_specific.push({ id: i, text: CartoDbLib.formatText(insuranceArray[i]) })
-//     }
-//     else {
-//       data_arr_generic.push({ id: i, text: CartoDbLib.formatText(insuranceArray[i]) })
-//     }
-//   }
-//
-//    return [
-//       {text: "Insurance type",
-//       children: data_arr_generic},
-//       {text: "Specific plans (Medicaid only)",
-//       children: data_arr_specific},
-//     ]
-//
-// };
