@@ -387,7 +387,7 @@ var CartoDbLib = {
     var lookup = {
       "reentry": "Re-entry",
       "women_children_only": "Women and Children Only",
-      "hiv_aids": "HIV-AIDS",
+      "hiv_aids": "HIV/AIDS-specific",
       "lgbtq_only": "LGBTQ Only"
     }
     if (text in lookup) {

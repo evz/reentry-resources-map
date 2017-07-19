@@ -15,8 +15,8 @@ describe "page", type: :feature, js: true do
       expect(find('#navbar ul li:nth-child(4)').text).to eq('About')
     end
 
-    it "has an Add location" do
-      expect(find('#navbar ul li:nth-child(5)').text).to eq('Add location')
+    it "has an Add resource" do
+      expect(find('#navbar ul li:nth-child(5)').text).to eq('Add resource')
     end
   end
 

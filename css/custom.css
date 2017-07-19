@@ -211,14 +211,14 @@ https://kyusuf.com/post/completely-css-custom-checkbox-radio-buttons-and-select-
 
 .btn-reset, .label {
   color: #ffffff;
-  background-color: #5187BB;
-  border-color: #5187BB;
+  background-color: #7F7F7F;
+  border-color: #7F7F7F;
 }
 
 .btn-change {
   color: #ffffff;
-  background-color: #CECECE;
-  border-color: #CECECE;
+  background-color: #5187BB;
+  border-color: #5187BB;
 }
 
 .btn-save {
