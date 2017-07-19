@@ -429,13 +429,16 @@ div#modal-image { padding: 0; }
   -moz-osx-font-smoothing: grayscale;
 }
 
+.icon-reentry:before {
+  content: "\e903";
+}
 .icon-vets:before {
   content: "\e902";
 }
-.icon-work:before {
-  content: "\e901";
-}
 .icon-counseling:before {
+  content: "\e900";
+}
+.icon-community:before {
   content: "\e900";
 }
 .icon-plus:before {
@@ -510,6 +513,12 @@ div#modal-image { padding: 0; }
 .icon-paste:before {
   content: "\f0ea";
 }
+.icon-cutlery:before {
+  content: "\f0f5";
+}
+.icon-food:before {
+  content: "\f0f5";
+}
 .icon-mail-reply:before {
   content: "\f112";
 }
@@ -528,9 +537,9 @@ div#modal-image { padding: 0; }
 .icon-heartbeat:before {
   content: "\f21e";
 }
-.icon-cutlery:before {
-  content: "\f0f5";
+.icon-briefcase:before {
+  content: "\e9ae";
 }
-.icon-food:before {
-  content: "\f0f5";
+.icon-work:before {
+  content: "\e9ae";
 }

@@ -24,6 +24,8 @@ var flagOptions = [
   "lgbtq_only"
 ];
 var iconMap = {
+  "reentry": "icon-reentry",
+  "community_assistance": "icon-community",
   "housing": "icon-home",
   "food": "icon-food",
   "health": "icon-heartbeat",
