@@ -405,11 +405,11 @@ div#modal-image { padding: 0; }
 /* ICOMOON */
 @font-face {
   font-family: 'icomoon';
-  src:  url('fonts/icomoon.eot?64o5pk');
-  src:  url('fonts/icomoon.eot?64o5pk#iefix') format('embedded-opentype'),
-    url('fonts/icomoon.ttf?64o5pk') format('truetype'),
-    url('fonts/icomoon.woff?64o5pk') format('woff'),
-    url('fonts/icomoon.svg?64o5pk#icomoon') format('svg');
+  src:  url('fonts/icomoon.eot?sth074');
+  src:  url('fonts/icomoon.eot?sth074#iefix') format('embedded-opentype'),
+    url('fonts/icomoon.ttf?sth074') format('truetype'),
+    url('fonts/icomoon.woff?sth074') format('woff'),
+    url('fonts/icomoon.svg?sth074#icomoon') format('svg');
   font-weight: normal;
   font-style: normal;
 }
