@@ -357,6 +357,7 @@ https://kyusuf.com/post/completely-css-custom-checkbox-radio-buttons-and-select-
 .facility-name {
   font-weight: bold;
   text-decoration: underline;
+  cursor: pointer;
 }
 .facility-notes {
   font-size: 14px;
