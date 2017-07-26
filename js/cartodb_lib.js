@@ -415,7 +415,10 @@ var CartoDbLib = {
       805: "1/2 mile",
       1610: "1 mile",
       3220: "2 miles",
-      8050: "5 miles"
+      8050: "5 miles",
+      16095: "10 miles",
+      40253: "25 miles",
+      80506: "50 miles"
     };
 
     var address = $("#search-address").val();
