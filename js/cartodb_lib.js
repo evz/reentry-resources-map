@@ -551,7 +551,10 @@ var CartoDbLib = {
 
   setZoom: function() {
     var zoom = '';
-    if (CartoDbLib.radius >= 8050) zoom = 12; // 5 miles
+    if (CartoDbLib.radius >= 80506) zoom = 9; // 5 miles
+    else if (CartoDbLib.radius >= 40253) zoom = 10; // 5 miles
+    else if (CartoDbLib.radius >= 16095) zoom = 11; // 5 miles
+    else if (CartoDbLib.radius >= 8050) zoom = 12; // 5 miles
     else if (CartoDbLib.radius >= 3220) zoom = 13; // 2 miles
     else if (CartoDbLib.radius >= 1610) zoom = 14; // 1 mile
     else if (CartoDbLib.radius >= 805) zoom = 15; // 1/2 mile
