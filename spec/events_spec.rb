@@ -20,12 +20,14 @@ describe "events", type: :feature, js: true do
 
     it 'updates the results' do
       do_search(address)
+      sleep(1)
       find('#btnViewMode', match: :first).click
       expect(find('.results-count').text).to end_with 'locations found'
     end
 
     it 'updates the info div' do
       do_search(address)
+      sleep(1)
       find('#btnViewMode', match: :first).click
       expect(find('.info').text).to eq('Hover over a location')
     end
