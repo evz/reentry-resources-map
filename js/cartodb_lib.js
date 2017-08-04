@@ -11,13 +11,14 @@ var facilityTypeOptions = [
 ];
 var restrictionOptions = [
   "men_only",
-  "women_only"
+  "women_only",
+  "prohibits_sex_offenders"
 ];
 var flagOptions = [
   "men_only",
   "women_only",
   "women_children_only",
-  "no_sex_offenders",
+  "prohibits_sex_offenders",
   "hiv_aids",
   "substance_free",
   "parolees",
