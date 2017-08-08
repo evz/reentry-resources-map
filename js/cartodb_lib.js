@@ -4,8 +4,8 @@ var facilityTypeOptions = [
   "food",
   "employment",
   "health",
-  "family_services",
-  "community_assistance",
+  "family_and_relationships",
+  "advocacy",
   "legal",
   "veterans"
 ];
@@ -26,14 +26,14 @@ var flagOptions = [
 ];
 var iconMap = {
   "reentry": "icon-reentry",
-  "community_assistance": "icon-community",
   "housing": "icon-home",
   "food": "icon-food",
   "health": "icon-heartbeat",
   "legal": "icon-gavel",
   "employment": "icon-work",
   "veterans": "icon-vets",
-  "family_services": "icon-users",
+  "family_and_relationships": "icon-users",
+  "advocacy": "icon-advocacy",
   "women_only": "icon-female",
   "men_only": "icon-male",
   "women_children_only": "icon-child"
