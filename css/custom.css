@@ -403,6 +403,23 @@ div#modal-image { padding: 0; }
   }
 }
 
+/* Spinner from https://codepen.io/brunjo/pen/WbrjKw */
+.spinner {
+  margin: 0 0 0 15px;
+  height: 30px;
+  width: 30px;
+  display: inline-block;
+  animation: rotate 0.8s infinite linear;
+  border: 6px solid #5187BB;
+  border-right-color: transparent;
+  border-radius: 50%;
+}
+
+@keyframes rotate {
+  0%    { transform: rotate(0deg); }
+  100%  { transform: rotate(360deg); }
+}
+
 /* ICOMOON */
 @font-face {
   font-family: 'icomoon';

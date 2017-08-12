@@ -238,6 +238,9 @@ var CartoDbLib = {
     }
 
     results.empty();
+    
+    // Loading animation, removed when search header updated
+    $("#search-header").html("Loading... <div class='spinner'></div>");
 
     sql.execute("SELECT " + CartoDbLib.fields + " FROM " + CartoDbLib.tableName + CartoDbLib.whereClause)
       .done(function(listData) {
