@@ -484,9 +484,9 @@ var CartoDbLib = {
     var address = $("#search-address").val();
 
     if (CartoDbLib.currentPinpoint != null && address != '') {
-      CartoDbLib.geoSearch = "ST_DWithin(ST_SetSRID(ST_POINT(" + CartoDbLib.currentPinpoint[1] +
+      CartoDbLib.geoSearch = "(ST_DWithin(ST_SetSRID(ST_POINT(" + CartoDbLib.currentPinpoint[1] +
         ", " + CartoDbLib.currentPinpoint[0] + "), 4326)::geography, the_geom::geography, " +
-        CartoDbLib.radius + ") OR the_geom IS NULL";
+        CartoDbLib.radius + ") OR the_geom IS NULL)";
     }
     else {
       CartoDbLib.geoSearch = ''
