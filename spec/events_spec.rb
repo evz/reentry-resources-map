@@ -41,7 +41,18 @@ describe "events", type: :feature, js: true do
 
     it 'shows result count' do
       visit '/'
-      expect(find('#search-header').text).to end_with 'search results in Illinois for all categories'
+      expect(find('#search-header h4').text).to end_with 'search results in Illinois for all categories'
+    end
+    
+    it 'does not show the previous button on the first page' do
+      visit '/'
+      expect(page).to have_selector("#prevButton", visible: false)
+      expect(find('#search-header h5').text.split(" ")[1].to_i).to be == 1
+    end
+    
+    it 'shows the next button on the first page' do
+      visit '/'
+      expect(page).to have_selector("#nextButton", visible: true)
     end
 
     it 'shows filter description' do
@@ -50,13 +61,47 @@ describe "events", type: :feature, js: true do
       find('#filters label.control', match: :first).click
       find("#btnSearch", match: :first).click
       sleep(1)
-      expect(find('#search-header').text).to end_with 'search results in Illinois for Re-entry'
+      expect(find('#search-header h4').text).to end_with 'search results in Illinois for Re-entry'
+    end
+    
+    it 'shows page counts' do
+      visit '/'
+      expect(find('#search-header h5').text).to start_with 'Page 1 of'
+    end
+    
+    it 'updates page counts on filter' do
+      visit '/'
+      total_page_count = find('#search-header h4').text.split(" ")[0].to_i
+      expect(page).to have_selector('#btnViewMode')
+      find('#filters label.control', match: :first).click
+      find("#btnSearch", match: :first).click
+      sleep(1)
+      filtered_page_count = find('#search-header h4').text.split(" ")[0].to_i
+      expect(filtered_page_count).to be < total_page_count
+    end
+    
+    it 'updates the current page number on clicking next' do
+      visit '/'
+      expect(find('#search-header h5').text.split(" ")[1].to_i).to be == 1
+      find('#nextButton', match: :first).click
+      expect(find('#search-header h5').text.split(" ")[1].to_i).to be == 2
     end
 
     it 'shows filtered address description' do
       do_search(address)
       sleep(1)
-      expect(find('#search-header').text).to end_with 'search results within 5 miles of 441 North Milwaukee Avenue, Chicago for all categories'
+      expect(find('#search-header h4').text).to end_with 'search results within 5 miles of 441 North Milwaukee Avenue, Chicago for all categories'
+    end
+    
+    it 'filters for both address and categories' do
+      do_search(address)
+      sleep(1)
+      address_count = find('#search-header h4').text.split(" ")[0].to_i
+      find('#filters .control:nth-child(2)', match: :first).click
+      find("#btnSearch", match: :first).click
+      sleep(1)
+      address_category_count = find("#search-header h4").text.split(" ")[0].to_i
+      expect(address_category_count).to be < address_count
     end
 
     it 'filters with multiple categories' do
@@ -66,7 +111,7 @@ describe "events", type: :feature, js: true do
       find('#filters .control:nth-child(2)', match: :first).click
       find("#btnSearch", match: :first).click
       sleep(1)
-      expect(find('#search-header').text).to end_with 'search results in Illinois for Re-entry, Housing'
+      expect(find('#search-header h4').text).to end_with 'search results in Illinois for Re-entry, Housing'
     end
 
     it 'show restrictions in description' do
@@ -76,7 +121,7 @@ describe "events", type: :feature, js: true do
       find('#filters .control:last-child', match: :first).click
       find("#btnSearch", match: :first).click
       sleep(1)
-      expect(find('#search-header').text).to end_with 'search results in Illinois for Re-entry not including Women only'
+      expect(find('#search-header h4').text).to end_with 'search results in Illinois for Re-entry that serve people on the sex offenders registry'
     end
   end
 

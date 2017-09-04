@@ -9,11 +9,6 @@ var facilityTypeOptions = [
   "legal",
   "veterans"
 ];
-var restrictionOptions = [
-  "men_only",
-  "women_only",
-  "prohibits_sex_offenders"
-];
 var flagOptions = [
   "men_only",
   "women_only",
@@ -38,6 +33,7 @@ var iconMap = {
   "men_only": "icon-male",
   "women_children_only": "icon-child"
 };
+var PAGE_SIZE = 20;
 
 var CartoDbLib = CartoDbLib || {};
 var CartoDbLib = {
@@ -54,6 +50,8 @@ var CartoDbLib = {
   typeSelections: '',
   userSelection: '',
   radius: '',
+  offset: 0,
+  results: [],
   resultsCount: 0,
   fields : "id, address, name, website, phone, hours, notes, restrictions, online_only, " + facilityTypeOptions.join(", ") + ", " + flagOptions.join(", "),
 
@@ -134,11 +132,10 @@ var CartoDbLib = {
 
       CartoDbLib.info.addTo(CartoDbLib.map);
       CartoDbLib.clearSearch();
+      CartoDbLib.getListResults();
       CartoDbLib.renderMap();
-      CartoDbLib.renderList();
       CartoDbLib.renderSavedResults();
       CartoDbLib.updateSavedCounter();
-      CartoDbLib.getResults();
     }
   },
 
@@ -168,10 +165,8 @@ var CartoDbLib = {
           CartoDbLib.setZoom();
           CartoDbLib.addIcon();
           CartoDbLib.addCircle();
+          CartoDbLib.getListResults();
           CartoDbLib.renderMap();
-          CartoDbLib.renderList();
-          CartoDbLib.getResults();
-
         }
         else {
           alert("We could not find your address: " + status);
@@ -184,10 +179,47 @@ var CartoDbLib = {
       CartoDbLib.createSQL();
       $.address.parameter('type', encodeURIComponent(CartoDbLib.typeSelections));
 
-      CartoDbLib.renderList();
+      CartoDbLib.getListResults();
       CartoDbLib.renderMap();
-      CartoDbLib.getResults();
     }
+  },
+
+  getListResults: function() {
+    var that = this;
+    var sql = new cartodb.SQL({ user: CartoDbLib.userName });
+
+    if (CartoDbLib == ' WHERE clerks is null ') {
+      CartoDbLib.whereClause = '';
+    }
+    that.offset = 0;
+
+    // Loading animation, removed when search header updated
+    $("#search-header").html("<h4>Loading... <div class='spinner'></div></h4>");
+
+    sql.execute("SELECT " + CartoDbLib.fields + " FROM " + CartoDbLib.tableName + CartoDbLib.whereClause)
+      .done(function(listData) {
+        that.results = listData.rows;
+        that.resultsCount = that.results.length;
+        that.results_div.update(that.resultsCount);
+
+        for (idx in that.results) {
+          if (that.results[idx].website != "") {
+            if (!that.results[idx].website.match(/^http/)) {
+              that.results[idx].website = "http://" + that.results[idx].website;
+            }
+          }
+          that.results[idx].icons = that.getIcons(that.results[idx]);
+          that.results[idx].flags = that.getFlags(that.results[idx]);
+          that.results[idx].cookie = that.checkCookieDuplicate(that.results[idx].id) == false;
+        }
+        that.results = that.results.sort(function(a, b) {
+          return (a.address===null)-(b.address===null) || -(a.address>b.address)||+(a.address<b.address);
+        });
+      }).done(function(listData) {
+        that.renderList();
+      }).error(function(errors) {
+        console.log("errors:" + errors);
+      });
   },
 
   renderMap: function() {
@@ -230,59 +262,53 @@ var CartoDbLib = {
   },
 
   renderList: function() {
-    var sql = new cartodb.SQL({ user: CartoDbLib.userName });
     var results = $('#results-list');
-
-    if (CartoDbLib == ' WHERE clerks is null ') {
-      CartoDbLib.whereClause = '';
-    }
-
     results.empty();
+    $("#prevButton").hide().off("click");
+    $("#nextButton").hide().off("click");
     
-    // Loading animation, removed when search header updated
-    $("#search-header").html("Loading... <div class='spinner'></div>");
-
-    sql.execute("SELECT " + CartoDbLib.fields + " FROM " + CartoDbLib.tableName + CartoDbLib.whereClause)
-      .done(function(listData) {
-        var obj_array = listData.rows;
-        if (listData.rows.length == 0) {
-          results.append("<p class='no-results'>No results. Please broaden your search.</p>");
+    var that = this;
+    var listOffset = this.offset;
+    var pageResults = CartoDbLib.results.slice(listOffset, listOffset + PAGE_SIZE);
+    
+    if (that.resultsCount == 0) {
+      $("#search-header").html("<h4 class='no-results'>No results. Please broaden your search.</h4>");
+      return;
+    }
+    
+    that.createSearchHeader();
+    
+    var source = $('#results-list-template').html();
+    var template = Handlebars.compile(source);
+    var result = template(pageResults);
+    $('#results-list').html(result);
+    $('.icon-star-o').tooltip();
+    $('.icon-star').tooltip();
+    
+    $(".facility-name").on("click", function() {
+      var thisName = $(this).text();
+      $.each(pageResults, function( index, obj ) {
+        if (obj.name == thisName ) {
+          CartoDbLib.modalPop(obj)
         }
-        else {
-          CartoDbLib.createSearchHeader(listData.rows.length);
-          for (idx in obj_array) {
-            if (obj_array[idx].website != "") {
-              if (!obj_array[idx].website.match(/^http/)) {
-                obj_array[idx].website = "http://" + obj_array[idx].website;
-              }
-            }
-            obj_array[idx].icons = CartoDbLib.getIcons(obj_array[idx]);
-            obj_array[idx].flags = CartoDbLib.getFlags(obj_array[idx]);
-            obj_array[idx].cookie = CartoDbLib.checkCookieDuplicate(obj_array[idx].id) == false;
-          }
-          obj_array = obj_array.sort(function(a, b) {
-            return (a.address===null)-(b.address===null) || -(a.address>b.address)||+(a.address<b.address);
-          });
-          var source = $('#results-list-template').html();
-          var template = Handlebars.compile(source);
-          var result = template(obj_array);
-          $('#results-list').html(result);
-          $('.icon-star-o').tooltip();
-          $('.icon-star').tooltip();
-        }
-    }).done(function(listData) {
-        $(".facility-name").on("click", function() {
-          var thisName = $(this).text();
-          var objArray = listData.rows;
-          $.each(objArray, function( index, obj ) {
-            if (obj.name == thisName ) {
-              CartoDbLib.modalPop(obj)
-            }
-          });
-        });
-    }).error(function(errors) {
-      console.log("errors:" + errors);
+      });
     });
+
+    if (listOffset > 0) {
+      $("#prevButton").click(function() { 
+        that.pageUpdate(listOffset - PAGE_SIZE); 
+      }).show();
+    }
+    if (listOffset + PAGE_SIZE < CartoDbLib.resultsCount) {
+      $("#nextButton").click(function() { 
+        that.pageUpdate(listOffset + PAGE_SIZE); 
+      }).show();
+    }
+  },
+
+  pageUpdate: function(offset) {
+    this.offset = offset;
+    this.renderList();
   },
 
   deleteBlankResults: function(array) {
@@ -297,17 +323,6 @@ var CartoDbLib = {
       }
     });
     return counter
-  },
-
-  getResults: function() {
-    var sql = new cartodb.SQL({ user: CartoDbLib.userName });
-
-    sql.execute("SELECT count(*) FROM " + CartoDbLib.tableName + CartoDbLib.whereClause)
-      .done(function(data) {
-        CartoDbLib.resultsCount = data.rows[0]["count"];
-        CartoDbLib.results_div.update(CartoDbLib.resultsCount);
-      }
-    );
   },
 
   modalPop: function(data) {
@@ -412,8 +427,8 @@ var CartoDbLib = {
     return newText.toLowerCase();
   },
 
-  createSearchHeader: function(count) {
-    var resultObj = {count: count};
+  createSearchHeader: function() {
+    var resultObj = {count: CartoDbLib.resultsCount};
     var radiusMap = {
       400: "2 blocks",
       805: "1/2 mile",
@@ -435,11 +450,13 @@ var CartoDbLib = {
     var catSelections = $.map($('.filter-option.category:checked'), function(obj, i) {
       return obj.value;
     });
-    var resSelections = $.map($('.filter-option.restriction:checked'), function(obj, i) {
-      return obj.value;
+    var resSelections = $.map($('.filter-option.restriction:checked').parent(), function(obj, i) {
+      return $.trim(obj.textContent).toLowerCase() || $.trim(obj.innerText).toLowerCase();
     });
     resultObj.categories = catSelections.length ? catSelections.join(", ") : false;
     resultObj.restrictions = resSelections.length ? resSelections.join(", ") : false;
+    resultObj.page = (this.offset / 20) + 1;
+    resultObj.totalPages = Math.ceil(this.resultsCount / 20);
 
     var source = $('#search-header-template').html();
     var template = Handlebars.compile(source);

@@ -56,7 +56,7 @@ layout: default
           </label>
           {{/each}}
           <h4 class="panel-title restriction-filter">
-            <span>Don't Show Me</span>
+            <span>Resources that serve</span>
           </h4>
           {{#each restrictions}}
           <label class="control">
@@ -64,7 +64,7 @@ layout: default
             {{#if icon}}
             <i class="{{icon}}"></i>
             {{/if}}
-            <input class="filter-option restriction" type="checkbox" id="{{id}}" value="{{text}}">
+            <input class="filter-option restriction" type="checkbox" id="{{id}}" value="{{value}}">
             <div class="check"></div>
           </label>
           {{/each}}
@@ -164,12 +164,15 @@ layout: default
       {% endraw %}
     </script>
     <div id="listCanvas" style="display: block">
-      <h4 id="search-header" class='list-header'>Search results</h4>
+      <div id="search-header" class="list-header">
+        <h4>Search results</h4>
+      </div>
       {% raw %}
       <script id="search-header-template" type="text/x-handlebars-template">
-        {{count}} search results {{#if location}} within {{location.distance}} of {{location.address}}
+        <h4>{{count}} search results {{#if location}} within {{location.distance}} of {{location.address}}
         {{else}} in Illinois {{/if}} for {{#if categories}} {{categories}}
-        {{else}} all categories {{/if}} {{#if restrictions}} not including {{restrictions}} {{/if}}
+        {{else}} all categories {{/if}} {{#if restrictions}} that serve {{restrictions}} {{/if}}</h4>
+        <h5>Page {{ page }} of {{ totalPages }}</h5>
       </script>
       {% endraw %}
       <table class="table list-table table-striped">
@@ -183,6 +186,16 @@ layout: default
         </thead>
         <tbody id='results-list'></tbody>
       </table>
+    </div>
+    <div class="row">
+      <div class="col-xs-12">
+        <div class="pull-left">
+          <button id="prevButton" style="display:none;" class="btn btn-search">Previous</button>
+        </div>
+        <div class="pull-right">
+          <button id="nextButton" style="display:none;" class="btn btn-search">Next</button>
+        </div>
+      </div>
     </div>
   </div>
 

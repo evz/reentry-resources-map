@@ -1,3 +1,9 @@
+var restrictionOptions = [
+  {id: 0, text: "Women", value: "men_only"},
+  {id: 1, text: "Men", value: "women_only"},
+  {id: 2, text: "People on the sex offenders registry", value: "prohibits_sex_offenders"}
+];
+
 $(window).resize(function () {
   var h = $(window).height(),
     offsetTop = 120; // Calculate the top offset
@@ -14,10 +20,6 @@ $(function() {
   $('#btnReset').tooltip();
   $('#btnViewMode').tooltip();
   $('[data-tooltip="true"]').tooltip();
-
-  $(':checkbox').click(function(){
-    CartoDbLib.doSearch();
-  });
 
   $('#btnSearch').click(function(){
     // Temporary fix for map load issue: set show map as default.
@@ -42,6 +44,8 @@ $(function() {
     else {
       $('#btnViewMode').html("<i class='icon-list'></i> List View");
       $('#listCanvas').hide();
+      $("#nextButton").hide();
+      $("#prevButton").hide();
       $('#mapCanvas').show();
       CartoDbLib.map.invalidateSize();
     }
@@ -58,7 +62,7 @@ $(function() {
   // Render filters template
   var filterData = {
     categories: makeSelectData(facilityTypeOptions),
-    restrictions: makeSelectData(restrictionOptions)
+    restrictions: restrictionOptions
   };
   var source = $('#filter-option-template').html();
   var template = Handlebars.compile(source);
