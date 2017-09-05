@@ -39,6 +39,7 @@ $(function() {
     if ($('#mapCanvas').is(":visible")){
       $('#btnViewMode').html("<i class='icon-map-marker'></i> Map View");
       $('#listCanvas').show();
+      CartoDbLib.renderList();
       $('#mapCanvas').hide();
     }
     else {
