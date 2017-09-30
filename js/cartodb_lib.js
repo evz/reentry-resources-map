@@ -59,7 +59,6 @@ var CartoDbLib = {
     //reset filters
     $("#search-address").val(CartoDbLib.convertToPlainString($.address.parameter('address')));
     $("#search-radius").val(CartoDbLib.convertToPlainString($.address.parameter('radius')));
-    $("#select-type").val(CartoDbLib.convertToPlainString($.address.parameter('type')));
 
     var num = $.address.parameter('modal_id');
 

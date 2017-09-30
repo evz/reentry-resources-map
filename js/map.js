@@ -14,7 +14,6 @@ $(window).resize(function () {
 $(function() {
   CartoDbLib.initialize();
   new Clipboard('#copy-button');
-
   var autocomplete = new google.maps.places.Autocomplete(document.getElementById('search-address'));
 
   $('#btnReset').tooltip();
@@ -69,6 +68,23 @@ $(function() {
   var template = Handlebars.compile(source);
   var result = template(filterData);
   $('#filters').html(result);
+
+  // Check if there are any type parameters in the address
+  // if so, check the associated inputs and trigger a search
+  var addressTypeStr = CartoDbLib.convertToPlainString($.address.parameter('type'));
+  facilityTypeOptions.forEach(function (t) {
+    if (addressTypeStr.indexOf(t) !== -1) {
+      $('input.filter-option[value="' + CartoDbLib.formatText(t) + '"]').prop('checked', true);
+    }
+  });
+  flagOptions.forEach(function (f) {
+    if (addressTypeStr.indexOf(f) !== -1) {
+      $('input.filter-option[value="' + f + '"]').prop('checked', true);
+    }
+  });
+  if (addressTypeStr.length > 0) {
+    CartoDbLib.doSearch();
+  }
 
   $("#btnSave").on('click', function() {
     CartoDbLib.addCookieValues();
