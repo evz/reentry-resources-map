@@ -518,11 +518,17 @@ var CartoDbLib = {
 
     CartoDbLib.whereClause = " WHERE clerks is null ";
 
-    if (CartoDbLib.geoSearch != "") {
-      CartoDbLib.whereClause += " AND " + CartoDbLib.geoSearch;
-    }
     if (CartoDbLib.userSelection != "") {
       CartoDbLib.whereClause += CartoDbLib.userSelection;
+    }
+    if (CartoDbLib.geoSearch != "") {
+      CartoDbLib.whereClause += " AND " + CartoDbLib.geoSearch;
+      // Order by name by default, but if geography supplied order by distance
+      CartoDbLib.whereClause += " ORDER BY the_geom <-> ST_SetSRID(ST_MakePoint(" + CartoDbLib.currentPinpoint[1] +
+        ", " + CartoDbLib.currentPinpoint[0] + "), 4326)";
+    }
+    else {
+      CartoDbLib.whereClause += " ORDER BY name";
     }
   },
 
