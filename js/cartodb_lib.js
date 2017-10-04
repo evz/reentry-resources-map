@@ -131,10 +131,12 @@ var CartoDbLib = {
 
       CartoDbLib.info.addTo(CartoDbLib.map);
       CartoDbLib.clearSearch();
-      CartoDbLib.getListResults();
       CartoDbLib.renderMap();
-      CartoDbLib.renderSavedResults();
-      CartoDbLib.updateSavedCounter();
+      if (CartoDbLib.convertToPlainString($.address.parameter('type')).length <= 1) {
+        CartoDbLib.getListResults();
+        CartoDbLib.renderSavedResults();
+        CartoDbLib.updateSavedCounter();
+      }
     }
   },
 
