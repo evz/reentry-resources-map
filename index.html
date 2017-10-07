@@ -20,6 +20,7 @@ layout: default
 <div class="row">
     <div class="col-md-8 col-md-offset-2">
         <div id="wizard-container">
+            <p id="progress-indicator"></p>
             <div class="progress">
                 <div class="progress-line"></div>
             </div>
@@ -41,7 +42,7 @@ layout: default
                             {{#each checkbox}}
                             <label class="control">
                                 {{text}}
-                                <input class="filter-option category" type="checkbox" value="{{value}}">
+                                <input class="filter-option category" type="checkbox" value="({{value}} is {{../checked_val}})">
                                 <div class="check"></div>
                             </label>
                             {{/each}}
@@ -65,11 +66,11 @@ layout: default
                         {{/if}}
                     </div>
                     {{/each}}
-                    {{#if @first}}{{else}}<button class="btn previous-btn">Previous</button>{{/if}}
+                    {{#if @first}}{{else}}<button class="btn previous-btn" onclick="updateStep({{@index}} - 1)">Previous</button>{{/if}}
                     {{#if @last}}
                     <button class="btn results-btn"><a href="/results">See Results</a></button>
                     {{else}}
-                    <button class="btn next-btn">Next</button>
+                    <button class="btn next-btn" onclick="updateStep({{@index}} + 1)">Next</button>
                     {{/if}}
                 </div>
             </div>

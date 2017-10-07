@@ -63,20 +63,25 @@ var WIZARD_STEPS = [
     }
 ];
 
-function nextStep() {
-    var currentStep = $(".step:visible");
-    var nextStep = $(".step[data-step='" + (currentStep.data("step")+1) + "']");
-    currentStep.hide();
-    nextStep.show();
-    $(".progress-line").css("width", (((nextStep.data("step") + 1) / WIZARD_STEPS.length) * 100) + '%');
+function updateQueryParams() {
+    var urlBase = "/results/#/?";
+    var typeOptions = $.map($(".filter-option:checked"), function(obj, idx) { return obj.value; });
+    if (typeOptions.length) urlBase += "type=" + encodeURIComponent(typeOptions.join(" AND ")) + "&";
+
+    var address = $("#search-address").val();
+    if (address.length) urlBase += "address=" + encodeURIComponent(address);
+
+    $(".results-btn a").attr("href", urlBase);
 }
 
-function previousStep() {
+function updateStep(idx) {
     var currentStep = $(".step:visible");
-    var previousStep = $(".step[data-step='" + (currentStep.data("step")-1) + "']");
+    var newStep = $(".step[data-step='" + idx + "']");
     currentStep.hide();
-    previousStep.show();
-    $(".progress-line").css("width", (((previousStep.data("step") + 1) / WIZARD_STEPS.length) * 100) + '%');
+    newStep.show();
+    $(".progress-line").css("width", (((idx + 1) / WIZARD_STEPS.length) * 100) + '%');
+    $("#progress-indicator").text("Step " + (idx + 1) + "/" + WIZARD_STEPS.length);
+    $.address.parameter("step", idx + 1);
 }
 
 (function() {
@@ -84,9 +89,9 @@ function previousStep() {
     var template = Handlebars.compile(source);
     var result = template(WIZARD_STEPS);
     $('#wizard').html(result);
-    $("#wizard .step:first-child").show();
-    $(".progress-line").css("width", ((1 / WIZARD_STEPS.length) * 100) + '%');
-    $(".step .next-btn").on("click", nextStep);
-    $(".step .previous-btn").on("click", previousStep);
+    var addrStep = $.address.parameter("step");
+    var currentPageIdx = addrStep ? +addrStep - 1 : 0;
+    updateStep(currentPageIdx);
     var autocomplete = new google.maps.places.Autocomplete(document.getElementById('search-address'));
+    $("#wizard input").on("change", updateQueryParams);
 })()

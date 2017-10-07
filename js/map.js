@@ -78,7 +78,9 @@ $(function() {
     }
   });
   flagOptions.forEach(function (f) {
-    if (addressTypeStr.indexOf(f) !== -1) {
+    // Modifying string because men_only is in str women_only
+    var checkStr = f === "men_only" ? addressTypeStr.replace("women_only", "") : addressTypeStr; 
+    if (checkStr.indexOf(f) !== -1) {
       $('input.filter-option[value="' + f + '"]').prop('checked', true);
     }
   });
