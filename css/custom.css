@@ -452,6 +452,12 @@ div#modal-image { padding: 0; }
   }
 }
 
+@media (max-width: 500px) {
+  .header-bg {
+    background-attachment: inherit;
+  }
+}
+
 .title-content {
   margin-top: 50px;
 }
