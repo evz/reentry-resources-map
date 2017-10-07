@@ -1,0 +1,224 @@
+---
+layout: default
+title: Results 
+permalink: /results/
+---
+
+<div class='row'>
+  <div class="col-md-4">
+    <p>Find reentry resources for you in Illinois.</p>
+    Your Address
+    <div class="form-group">
+        <input class='form-control' id='search-address' placeholder='Enter your address or an intersection' type='text'>
+    </div>
+    <div class='form-group'>
+        Within
+        <select id='search-radius' class='form-control'>
+          <option value='400'>2 blocks</option>
+          <option value='805'>1/2 mile</option>
+          <option value='1610'>1 mile</option>
+          <option value='3220'>2 miles</option>
+          <option value='8050'>5 miles</option>
+          <option value='16095'>10 miles</option>
+          <option value='40253'>25 miles</option>
+          <option value='80506'>50 miles</option>
+        </select>
+    </div>
+
+    <script id="countyClerk-template" type="text/x-handlebars-template">
+      {% raw %}
+      <p><strong>The {{name}} is at {{address}} with phone number {{phone}}</strong>.</p>
+      <p>Contact the County Clerk to get your birth certificate or your record expunged.</p>
+      {% endraw %}
+    </script>
+    <div id="countyClerk"></div>
+
+    <p><strong>Filter your search.</strong> Check boxes and then click "Search" to see filtered resources.</p>
+
+    <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+      <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="filter-heading">
+          <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse-filters" aria-expanded="true" aria-controls="collapse-filters">
+            <h4 class="panel-title">
+              <span>Filter Options</span>
+              <span style="float:right;"><i class="icon-chevron-down"></i></span>
+            </h4>
+          </a>
+        </div>
+        <script id="filter-option-template" type="text/x-handlebars-template">
+          {% raw %}
+          {{#each categories}}
+          <label class="control">
+            {{text}}
+            {{#if icon}}
+            <i class="{{icon}}"></i>
+            {{/if}}
+            <input class="filter-option category" type="checkbox" id="{{id}}" value="{{text}}">
+            <div class="check"></div>
+          </label>
+          {{/each}}
+          <h4 class="panel-title restriction-filter">
+            <span>Resources that serve</span>
+          </h4>
+          {{#each restrictions}}
+          <label class="control">
+            {{text}}
+            {{#if icon}}
+            <i class="{{icon}}"></i>
+            {{/if}}
+            <input class="filter-option restriction" type="checkbox" id="{{id}}" value="{{value}}">
+            <div class="check"></div>
+          </label>
+          {{/each}}
+          {% endraw %}
+        </script>
+        <div id="collapse-filters" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="filter-heading">
+          <div class="panel-body">
+            <div class="checkbox" id="filters"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <button class='btn btn-search' id="btnSearch"><i class='icon-search'></i> Search</button>
+      <a href="{{site.baseurl}}/results" class='btn btn-reset' id="btnReset" data-toggle="tooltip" data-placement="bottom" title="Reset"><i class="icon-repeat" aria-hidden="true"></i> Reset</a>
+      <button class='btn btn-change' id='btnViewMode' data-toggle='tooltip' data-placement="bottom" title='Change view'><i class='icon-map-marker'></i> Map View</button>
+      <button class='btn btn-save' id="btnSave"><i class='icon-star-o'></i> Save Search</button>
+    </div>
+  </div>
+
+  <div class='col-md-8'>
+    <div id='mapCanvas' style="display: none"></div>
+    <script id="results-list-template" type="text/x-handlebars-template">
+      {% raw %}
+      {{#each this}}
+      <tr>
+        <td class="hidden-xs">
+          <span class="hidden given-id">{{id}}</span>
+          {{#if cookie}}
+          <i class='icon-star' aria-hidden='true' data-toggle='tooltip' title='Location saved'></i>
+          {{else}}
+          <i class="icon-star-o" aria-hidden="true" data-toggle="tooltip" title="Save location"></i>
+          {{/if}}
+        </td>
+        <td>
+          <span class="facility-name">{{name}}</span>
+          {{#if icons}}
+            {{#each icons}}
+              <i class="{{this}}"></i>
+            {{/each}}
+          {{/if}}
+          <br>
+          <span class="facility-notes">{{notes}}</span><br>
+          {{#if flags}}
+          <br>
+          <span class="facility-flags"><strong>Restrictions</strong>:
+          {{#each flags}}
+             {{#if icon}}
+             <i class="{{icon}}"></i>
+             {{/if}}
+             {{flag}}
+          {{/each}}
+          </span><br>
+          {{/if}}
+        {{#if online_only}}
+            <span class='hidden-sm hidden-md hidden-lg mobile-info'>
+              <span>Online Only</span><br>
+              <span class="facility-site">
+                <a href='{{website}}' target='_blank'><i class='icon-reply' aria-hidden='true'></i> Website</a>
+              </span>
+            </span>
+          </td>
+          <br>
+          <td class="hidden-xs" style="width: 300px">
+            Online Only<br>
+        {{else}}
+          {{#if address}}
+            <span class='hidden-sm hidden-md hidden-lg mobile-info'>
+              <i class='icon-map-marker'></i>  {{address}}<br>
+              <span class="modal-directions"><a href="http://maps.google.com/?q={{address}}" target="_blank">GET DIRECTIONS</a></span><br>
+              {{#if phone}}
+              <i class="icon-phone"></i> {{phone}}<br>
+              {{/if}}
+              <span class="facility-site">
+                <a href='{{website}}' target='_blank'><i class='icon-reply' aria-hidden='true'></i> Website</a>
+              </span>
+            </span>
+          </td>
+          <td class="hidden-xs" style="width: 300px"><i class="icon-map-marker" aria-hidden="true"></i>
+            <span class="facility-address">{{address}}</span><br>
+            <span class="modal-directions"><a href="http://maps.google.com/?q={{address}}" target="_blank">GET DIRECTIONS</a></span><br>
+          {{else}}
+          </td>
+          <td class="hidden-xs" style="width: 300px">
+          {{/if}}
+        {{/if}}
+        {{#if phone}}
+        <i class="icon-phone"></i> <span class="facility-phone">{{phone}}</span><br>
+        {{/if}}
+        <span class="facility-site">
+          <a href='{{website}}' target='_blank'><i class='icon-reply' aria-hidden='true'></i> Website</a>
+        </span>
+        </td>
+      </tr>
+      {{/each}}
+      {% endraw %}
+    </script>
+    <div id="listCanvas" style="display: block">
+      <div id="search-header" class="list-header">
+        <h4>Search results</h4>
+      </div>
+      {% raw %}
+      <script id="search-header-template" type="text/x-handlebars-template">
+        <h4>{{count}} search results {{#if location}} within {{location.distance}} of {{location.address}}
+        {{else}} in Illinois {{/if}} for {{#if categories}} {{categories}}
+        {{else}} all categories {{/if}} {{#if restrictions}} that serve {{restrictions}} {{/if}}</h4>
+        <h5>Page {{ page }} of {{ totalPages }}</h5>
+      </script>
+      {% endraw %}
+      <table class="table list-table table-striped">
+        <thead>
+          <tr>
+            <th class='hidden-xs'></th>
+            <th>Facility</th>
+            <!-- <th class='hidden-xs'>Hours</th> -->
+            <th class='hidden-xs'>Contact</th>
+          </tr>
+        </thead>
+        <tbody id='results-list'></tbody>
+      </table>
+    </div>
+    <div class="row">
+      <div class="col-xs-12">
+        <div class="pull-left">
+          <button id="prevButton" style="display:none;" class="btn btn-search">Previous</button>
+        </div>
+        <div class="pull-right">
+          <button id="nextButton" style="display:none;" class="btn btn-search">Next</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+{% include modal.html %}
+
+<style id="probation-maps-styles">
+  #probationresourcesmap_mergeddata_resources{
+    marker-fill-opacity: 0.9;
+    marker-line-color: #FFF;
+    marker-line-width: 1;
+    marker-line-opacity: 1;
+    marker-placement: point;
+    marker-type: ellipse;
+    marker-width: 15;
+    marker-fill: #3E7BB6;
+    marker-allow-overlap: true;
+  }
+</style>
+<script>
+var baseUrl = "{{ site.baseurl }}";
+</script>
+<script type="text/javascript" src="{{ site.baseurl }}/js/map.js"></script>

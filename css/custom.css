@@ -410,7 +410,7 @@ div#modal-image { padding: 0; }
   width: 30px;
   display: inline-block;
   animation: rotate 0.8s infinite linear;
-  border: 6px solid #5187BB;
+  border: 6px solid #5187bb;
   border-right-color: transparent;
   border-radius: 50%;
 }
@@ -418,6 +418,97 @@ div#modal-image { padding: 0; }
 @keyframes rotate {
   0%    { transform: rotate(0deg); }
   100%  { transform: rotate(360deg); }
+}
+
+.header-bg {
+  margin-left: -15px;
+  margin-right: -15px;
+  margin-top: -35px;
+  height: 350px;
+  background-image: url("img/irgi_bg.png");
+  background-attachment: fixed;
+  background-position: 0% 40%
+}
+
+.header-bg .title {
+  position: absolute;
+  background-color: rgba(255,255,255,0.7);
+  color: rgb(92, 134, 182);
+  max-width: 600px;
+  left: 25%;
+  right: 25%;
+  top: 150px;
+  padding: 25px;
+  text-align: center;
+}
+
+@media (max-width: 768px) {
+  .header-bg .title {
+    max-width: inherit;
+    width: 100%;
+    left: 0;
+    right: 0;
+  }
+}
+
+.title-content {
+  margin-top: 50px;
+}
+
+#wizard-container {
+  padding-top: 25px;
+  margin-bottom: 50px;
+}
+
+#wizard-container .progress {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 10px;
+  background: rgba(81, 135, 187, 0.4);
+}
+
+#wizard-container .progress .progress-line {
+  position: absolute;
+  left: 0;
+  height: 100%;
+  width: 0%;
+  background: rgba(81, 135, 187, 0.9);
+  transition: width 0.2s linear;
+}
+
+#wizard-container > .results-btn {
+  margin-top: 25px;
+  margin-bottom: 0;
+}
+
+.step .results-btn {
+  float: right;
+}
+
+#wizard {
+  margin-top: 35px;
+}
+
+#wizard .step {
+  display: none;
+}
+
+#wizard .step .next-btn {
+  float: right;
+}
+
+#wizard .step div.question {
+  margin-top: 35px;
+  margin-bottom: 20px;
+}
+
+.next-btn, .previous-btn, .results-btn, .results-btn > a {
+  background-color: #5187BB;
+  color: #fff;
+}
+.results-btn > a:hover, .results-btn > a:active, .results-btn > a:focus {
+  color: #333333;
 }
 
 /* ICOMOON */
