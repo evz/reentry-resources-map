@@ -445,6 +445,8 @@ div#modal-image { padding: 0; }
 
 @media (max-width: 768px) {
   .header-bg .title {
+    top: 50px;
+    position: relative;
     max-width: inherit;
     width: 100%;
     left: 0;
