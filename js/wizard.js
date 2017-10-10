@@ -83,7 +83,6 @@ function updateStep(idx) {
     currentStep.hide();
     newStep.show();
     $(".progress-line").css("width", (((idx + 1) / WIZARD_STEPS.length) * 100) + '%');
-    $("#progress-indicator").text("Step " + (idx + 1) + "/" + WIZARD_STEPS.length);
     $.address.parameter("step", idx + 1);
 }
 
