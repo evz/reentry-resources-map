@@ -1,6 +1,7 @@
 var WIZARD_STEPS = [
     {
         title: 'Tell us what you’re looking for.',
+        step_label: 'What',
         questions: [
             {
                 text: 'Thinking of the person for whom you are finding resources, ' +
@@ -31,7 +32,8 @@ var WIZARD_STEPS = [
         ]
     },
     {
-        title: 'Tell us where you\'re looking',
+        title: 'Tell us where you\'re looking.',
+        step_label: 'Where',
         questions: [
             {
                 text: 'Do you want to see resources that are close to a certain address? If so, enter it below.',
@@ -43,6 +45,7 @@ var WIZARD_STEPS = [
     },
     {
         title: 'Tell us a little more about the person who is looking for resources.',
+        step_label: 'Who',
         questions: [
             {
                 text: 'Thinking of the person for whom you are finding resources, ' + 
@@ -71,7 +74,7 @@ function updateQueryParams() {
     var address = $("#search-address").val();
     if (address.length) urlBase += "address=" + encodeURIComponent(address);
 
-    $(".results-btn a").attr("href", urlBase);
+    $(".results-link").attr("href", urlBase);
 }
 
 function updateStep(idx) {
@@ -84,11 +87,23 @@ function updateStep(idx) {
     $.address.parameter("step", idx + 1);
 }
 
+function stepLabels(steps) {
+    var width = (100 / steps.length);
+    steps.forEach(function(step, idx) {
+        var $stepLabel = $("<div>", { "class": "progress-label" });
+        $stepLabel.text(step.step_label);
+        $stepLabel.css("width", width.toFixed(2) + "%");
+        $stepLabel.css("left", (width * idx).toFixed(2) + "%");
+        $(".progress").append($stepLabel);
+    });
+}
+
 (function() {
     var source = $('#wizard-template').html();
     var template = Handlebars.compile(source);
     var result = template(WIZARD_STEPS);
     $('#wizard').html(result);
+    stepLabels(WIZARD_STEPS);
     var addrStep = $.address.parameter("step");
     var currentPageIdx = addrStep ? +addrStep - 1 : 0;
     updateStep(currentPageIdx);

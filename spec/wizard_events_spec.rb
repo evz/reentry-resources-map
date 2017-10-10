@@ -25,16 +25,16 @@ describe "events", type: :feature, js: true do
       expect(page).to have_selector("#wizard .step[data-step='1']", visible: true)
     end
 
-    it "updates .results-btn href values on input change" do
+    it "updates .results-link href values on input change" do
       find("label.control", match: :first).click
-      expect(find(".results-btn a", match: :first)[:href]).to have_content("/results/#/?type=(housing%20is%20true)&")
+      expect(find(".results-link", match: :first)[:href]).to have_content("/results/#/?type=(housing%20is%20true)&")
     end
 
     it "updates the address parameter when input is filled" do
       find(".next-btn", match: :first).click
       fill_in 'search-address', :with => address
       find(".next-btn", match: :first).click
-      expect(find(".results-btn a", match: :first)[:href]).to have_content(address.split(" ")[0])
+      expect(find(".results-link", match: :first)[:href]).to have_content(address.split(" ")[0])
     end
   end
 

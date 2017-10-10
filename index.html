@@ -24,10 +24,10 @@ layout: default
             <div class="progress">
                 <div class="progress-line"></div>
             </div>
-            <button class="btn results-btn"><a href="/results">See Resources</a></button>
             <div id="wizard"></div>
         </div>
         <script id="wizard-template" type="text/x-handlebars-template">
+            <a class="results-link" href="/results">Skip all of these questions to see the entire list.</a>
             {% raw %}
             {{#each this}}
             <div class="step" data-step="{{@index}}">
@@ -68,7 +68,7 @@ layout: default
                     {{/each}}
                     {{#if @first}}{{else}}<button class="btn previous-btn" onclick="updateStep({{@index}} - 1)">Previous</button>{{/if}}
                     {{#if @last}}
-                    <button class="btn results-btn"><a href="/results">See Results</a></button>
+                    <button class="btn results-btn"><a class="results-link" href="/results">See Results</a></button>
                     {{else}}
                     <button class="btn next-btn" onclick="updateStep({{@index}} + 1)">Next</button>
                     {{/if}}

@@ -23,7 +23,9 @@ var CartoDbLib = {
   initialize: function(){
     //reset filters
     $("#search-address").val(CartoDbLib.convertToPlainString($.address.parameter('address')));
-    $("#search-radius").val(CartoDbLib.convertToPlainString($.address.parameter('radius')));
+    if ($.address.parameter('radius')) {
+      $("#search-radius").val(CartoDbLib.convertToPlainString($.address.parameter('radius')));
+    }
 
     var num = $.address.parameter('modal_id');
 

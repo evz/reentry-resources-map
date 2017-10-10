@@ -180,16 +180,28 @@ https://kyusuf.com/post/completely-css-custom-checkbox-radio-buttons-and-select-
 	border-color: #7b7b7b;
 }
 
-#filter-heading a {
+#filter-heading {
   color: #5187BB;
+  margin: 0;
+  margin-bottom: 25px;
 }
-#filter-heading a[aria-expanded="false"] h4 span i.icon-chevron-down {
-  transform: rotate(0deg);
-  transition: transform 0.2s linear;
+
+.address-header {
+  margin-top: 15px;
 }
-#filter-heading a[aria-expanded="true"] h4 span i.icon-chevron-down {
-  transform: rotate(-180deg);
-  transition: transform 0.2s linear;
+
+#search-address {
+  margin-top: 5px;
+}
+
+.address-header .row div:first-child {
+  margin-bottom: 10px;
+}
+
+.address-header select {
+  width: 75px;
+  height: 30px;
+  display: inline-block;
 }
 
 .m-top-sm { margin-top: 10px; }
@@ -479,9 +491,9 @@ div#modal-image { padding: 0; }
 
 #wizard-container .progress {
   position: absolute;
-  left: 0;
-  right: 0;
-  height: 10px;
+  left: 15px;
+  right: 15px;
+  height: 50px;
   background: rgba(81, 135, 187, 0.4);
 }
 
@@ -492,6 +504,17 @@ div#modal-image { padding: 0; }
   width: 0%;
   background: rgba(81, 135, 187, 0.9);
   transition: width 0.2s linear;
+}
+
+#wizard-container .progress-label {
+  position: absolute;
+  z-index: 1;
+  top: 25%;
+  height: 50%;
+  text-align: center;
+  bottom: 0;
+  font-weight: bold;
+  font-size: 18px;
 }
 
 #wizard-container > .results-btn {
@@ -505,7 +528,6 @@ div#modal-image { padding: 0; }
 
 #wizard-container p.help-text {
   font-size: 16px;
-  font-style: italic;
 }
 
 #wizard-container label {
@@ -517,11 +539,15 @@ div#modal-image { padding: 0; }
 }
 
 #wizard {
-  margin-top: 35px;
+  margin-top: 85px;
 }
 
 #wizard .step {
   display: none;
+}
+
+#wizard > .results-link {
+  font-size: 18px;
 }
 
 #wizard .step .next-btn {
