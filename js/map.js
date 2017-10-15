@@ -20,7 +20,7 @@ $(function() {
   $('#btnViewMode').tooltip();
   $('[data-tooltip="true"]').tooltip();
 
-  $('#btnSearch, #btnSearchAddress').click(function(){
+  $('#btnSearch').click(function(){
     // Temporary fix for map load issue: set show map as default.
     if ($('#mapCanvas').is(":visible")){
       CartoDbLib.doSearch();

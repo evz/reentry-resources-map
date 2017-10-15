@@ -13,7 +13,7 @@ layout: default
         </p>
         <p>
             Answer some questions to see a custom list of programs and resources. You can skip any question you want. 
-            Or, skip  all of these questions to see the entire list.
+            Or, <a class="resources-link" href="/resources">skip all of these questions to see the entire list</a>.
         </p>
     </div>
 </div>
@@ -26,7 +26,6 @@ layout: default
             <div id="wizard"></div>
         </div>
         <script id="wizard-template" type="text/x-handlebars-template">
-            <a class="results-link" href="/results">Skip all of these questions to see the entire list.</a>
             {% raw %}
             {{#each this}}
             <div class="step" data-step="{{@index}}">
@@ -67,7 +66,7 @@ layout: default
                     {{/each}}
                     {{#if @first}}{{else}}<button class="btn previous-btn" onclick="updateStep({{@index}} - 1)">Previous</button>{{/if}}
                     {{#if @last}}
-                    <button class="btn results-btn"><a class="results-link" href="/results">See Results</a></button>
+                    <button class="btn resources-btn"><a class="resources-link" href="/resources">See Resources</a></button>
                     {{else}}
                     <button class="btn next-btn" onclick="updateStep({{@index}} + 1)">Next</button>
                     {{/if}}

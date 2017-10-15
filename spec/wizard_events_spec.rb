@@ -27,14 +27,14 @@ describe "events", type: :feature, js: true do
 
     it "updates .results-link href values on input change" do
       find("label.control", match: :first).click
-      expect(find(".results-link", match: :first)[:href]).to have_content("/results/#/?type=(housing%20is%20true)&")
+      expect(find(".resources-link", match: :first)[:href]).to have_content("/resources/#/?type=(housing%20is%20true)&")
     end
 
     it "updates the address parameter when input is filled" do
       find(".next-btn", match: :first).click
       fill_in 'search-address', :with => address
       find(".next-btn", match: :first).click
-      expect(find(".results-link", match: :first)[:href]).to have_content(address.split(" ")[0])
+      expect(find(".resources-link", match: :first)[:href]).to have_content(address.split(" ")[0])
     end
   end
 

@@ -9,10 +9,17 @@ h1, h2, h3, .navbar-brand {
 
 h5 { margin-top: 0px ; margin-bottom: 2px; }
 
-a { color: #F57E20; }
+a {
+  color: #F57E20;
+  text-decoration: underline;
+}
+
+button a,
+a.btn {
+  text-decoration: none;
+}
 
 a:hover {
-  text-decoration: none;
   color: #134fb8;
 }
 
@@ -31,6 +38,10 @@ img {
 .navbar {
   margin-bottom: 10px;
   border-radius: 0px;
+}
+
+.navbar a {
+  text-decoration: none;
 }
 
 .navbar-inverse {
@@ -74,6 +85,8 @@ img {
   .navbar-brand {
       font-size: 26px;
       line-height: 1em;
+      max-width: 80%;
+      height: 100%;
   }
 }
 
@@ -180,14 +193,20 @@ https://kyusuf.com/post/completely-css-custom-checkbox-radio-buttons-and-select-
 	border-color: #7b7b7b;
 }
 
-#filter-heading {
+#filter-heading a {
   color: #5187BB;
-  margin: 0;
-  margin-bottom: 25px;
+  text-decoration: none;
 }
-
-.address-header {
-  margin-top: 15px;
+#filter-heading span {
+  font-size: 22px;
+}
+#filter-heading a[aria-expanded="false"] h4 span i.icon-chevron-down {
+  transform: rotate(0deg);
+  transition: transform 0.2s linear;
+}
+#filter-heading a[aria-expanded="true"] h4 span i.icon-chevron-down {
+  transform: rotate(-180deg);
+  transition: transform 0.2s linear;
 }
 
 #search-address {
@@ -201,6 +220,11 @@ https://kyusuf.com/post/completely-css-custom-checkbox-radio-buttons-and-select-
 .address-header select {
   width: 75px;
   height: 30px;
+  display: inline-block;
+}
+
+#search-radius {
+  width: 75px;
   display: inline-block;
 }
 
@@ -266,7 +290,7 @@ https://kyusuf.com/post/completely-css-custom-checkbox-radio-buttons-and-select-
   color: #777;
 }
 
-.results-count {
+.resources-count {
   font-family: 'Open Sans', sans-serif;
   padding: 6px 8px;
   background: #ffffff;
@@ -400,10 +424,14 @@ div#modal-image { padding: 0; }
         0px 0px 0px 6px rgba(0,0,0,0.2);
 }
 
-.restriction-filter {
+.panel-body h4 {
   margin-top: 25px;
   margin-bottom: 10px;
   color: #5187BB;
+}
+
+.panel-body > h4:first-child {
+  margin-top: 0;
 }
 
 @media (max-width: 768px) {
@@ -517,7 +545,7 @@ div#modal-image { padding: 0; }
   font-size: 18px;
 }
 
-#wizard-container > .results-btn {
+#wizard-container > .resources-btn {
   margin-top: 25px;
   margin-bottom: 0;
 }
@@ -534,7 +562,7 @@ div#modal-image { padding: 0; }
   font-size: 16px;
 }
 
-.step .results-btn {
+.step .resources-btn {
   float: right;
 }
 
@@ -546,7 +574,7 @@ div#modal-image { padding: 0; }
   display: none;
 }
 
-#wizard > .results-link {
+#wizard > .resources-link {
   font-size: 18px;
 }
 
@@ -559,11 +587,11 @@ div#modal-image { padding: 0; }
   margin-bottom: 20px;
 }
 
-.next-btn, .previous-btn, .results-btn, .results-btn > a {
+.next-btn, .previous-btn, .resources-btn, .resources-btn > a {
   background-color: #5187BB;
   color: #fff;
 }
-.results-btn > a:hover, .results-btn > a:active, .results-btn > a:focus {
+.resources-btn > a:hover, .resources-btn > a:active, .resources-btn > a:focus {
   color: #333333;
 }
 

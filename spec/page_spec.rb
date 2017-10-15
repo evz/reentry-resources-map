@@ -3,14 +3,14 @@ describe "page", type: :feature, js: true do
   describe "wizard page navbar" do
     before(:each) { visit '/' }
 
-    it "has a Results link" do
-      expect(find('#navbar ul li:first-child').text).to eq('Results')
+    it "has a Resources link" do
+      expect(find('#navbar ul li:first-child').text).to eq('Resources')
     end
 
   end
 
-  describe "results page navbar" do
-    before(:each) { visit '/results' }
+  describe "resources page navbar" do
+    before(:each) { visit '/resources' }
 
     it "has a page title" do
       expect(find('.navbar-brand').text).to eq('Illinois Re-Entry Resources')
@@ -31,16 +31,16 @@ describe "page", type: :feature, js: true do
 
   describe "map canvas" do
     before(:each) {
-      visit '/results'
+      visit '/resources'
       find('#btnViewMode', match: :first).click
     }
 
-    it "has a results div" do
-      expect(page).to have_selector('.results-count', visible: true)
+    it "has a resources div" do
+      expect(page).to have_selector('.resources-count', visible: true)
     end
 
     it "has an info div" do
-      expect(page).to have_selector('.results-count', visible: true)
+      expect(page).to have_selector('.resources-count', visible: true)
     end
   end
 

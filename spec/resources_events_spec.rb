@@ -18,11 +18,11 @@ describe "events", type: :feature, js: true do
       expect(page).to have_xpath('//img[@src="/img/blue-pushpin.png"]')
     end
 
-    it 'updates the results' do
+    it 'updates the resources' do
       do_search(address)
       sleep(1)
       find('#btnViewMode', match: :first).click
-      expect(find('.results-count').text).to end_with 'locations found'
+      expect(find('.resources-count').text).to end_with 'locations found'
     end
 
     it 'updates the info div' do
@@ -40,37 +40,37 @@ describe "events", type: :feature, js: true do
     end
 
     it 'shows result count' do
-      visit '/results'
-      expect(find('#search-header h4').text).to end_with 'search results in Illinois for all categories'
+      visit '/resources'
+      expect(find('#search-header h4').text).to end_with 'resources in Illinois for all categories'
     end
     
     it 'does not show the previous button on the first page' do
-      visit '/results'
+      visit '/resources'
       expect(page).to have_selector("#prevButton", visible: false)
       expect(find('#search-header h5').text.split(" ")[1].to_i).to be == 1
     end
     
     it 'shows the next button on the first page' do
-      visit '/results'
+      visit '/resources'
       expect(page).to have_selector("#nextButton", visible: true)
     end
 
     it 'shows filter description' do
-      visit '/results'
+      visit '/resources'
       expect(page).to have_selector('#btnViewMode')
       find('#filters label.control', match: :first).click
       find("#btnSearch", match: :first).click
       sleep(1)
-      expect(find('#search-header h4').text).to end_with 'search results in Illinois for Re-entry'
+      expect(find('#search-header h4').text).to end_with 'resources in Illinois for Re-entry'
     end
     
     it 'shows page counts' do
-      visit '/results'
+      visit '/resources'
       expect(find('#search-header h5').text).to start_with 'Page 1 of'
     end
     
     it 'updates page counts on filter' do
-      visit '/results'
+      visit '/resources'
       total_page_count = find('#search-header h4').text.split(" ")[0].to_i
       expect(page).to have_selector('#btnViewMode')
       find('#filters label.control', match: :first).click
@@ -81,7 +81,7 @@ describe "events", type: :feature, js: true do
     end
     
     it 'updates the current page number on clicking next' do
-      visit '/results'
+      visit '/resources'
       expect(find('#search-header h5').text.split(" ")[1].to_i).to be == 1
       find('#nextButton', match: :first).click
       expect(find('#search-header h5').text.split(" ")[1].to_i).to be == 2
@@ -90,7 +90,7 @@ describe "events", type: :feature, js: true do
     it 'shows filtered address description' do
       do_search(address)
       sleep(1)
-      expect(find('#search-header h4').text).to end_with 'search results within 5 miles of 441 North Milwaukee Avenue, Chicago for all categories'
+      expect(find('#search-header h4').text).to end_with 'resources within 5 miles of 441 North Milwaukee Avenue, Chicago for all categories'
     end
     
     it 'filters for both address and categories' do
@@ -105,23 +105,23 @@ describe "events", type: :feature, js: true do
     end
 
     it 'filters with multiple categories' do
-      visit '/results'
+      visit '/resources'
       expect(page).to have_selector('#btnViewMode')
       find('#filters .control', match: :first).click
       find('#filters .control:nth-child(2)', match: :first).click
       find("#btnSearch", match: :first).click
       sleep(1)
-      expect(find('#search-header h4').text).to end_with 'search results in Illinois for Re-entry, Housing'
+      expect(find('#search-header h4').text).to end_with 'resources in Illinois for Re-entry, Housing'
     end
 
     it 'show restrictions in description' do
-      visit '/results'
+      visit '/resources'
       expect(page).to have_selector('#btnViewMode')
       find('#filters .control:first-child', match: :first).click
       find('#filters .control:last-child', match: :first).click
       find("#btnSearch", match: :first).click
       sleep(1)
-      expect(find('#search-header h4').text).to end_with 'search results in Illinois for Re-entry that serve people on the sex offenders registry'
+      expect(find('#search-header h4').text).to end_with 'resources in Illinois for Re-entry that serve people on the sex offenders registry'
     end
   end
 
@@ -133,7 +133,7 @@ describe "events", type: :feature, js: true do
     end
 
     it "adds a list item to dropdown menu" do
-      visit '/results'
+      visit '/resources'
       sleep(1)
       find("#btnSave", match: :first).click
       sleep(1)
@@ -156,13 +156,13 @@ describe "events", type: :feature, js: true do
       do_search(address)
       find("#btnReset", match: :first).click
       uri = URI.parse(current_url)
-      expect("#{uri.path}?#{uri.query}").to eq("/results?")
+      expect("#{uri.path}?#{uri.query}").to eq("/resources?")
     end
   end
 
   describe "save facility" do
     it "adds an element to nav bar" do
-      visit '/results'
+      visit '/resources'
       sleep(1)
       find("td.hidden-xs .icon-star-o", match: :first).click
       sleep(1)
@@ -178,7 +178,7 @@ describe "events", type: :feature, js: true do
 
   describe "click on list content" do
     it "creates a modal pop-up" do
-      visit '/results'
+      visit '/resources'
       sleep(1)
       find('span.facility-name', match: :first).click
       sleep(1)

@@ -1,7 +1,7 @@
 ---
 layout: default
-title: Results 
-permalink: /results/
+title: Resources
+permalink: /resources/
 ---
 
 <div class='row'>
@@ -12,50 +12,83 @@ permalink: /results/
       <p>Contact the County Clerk to get your birth certificate or your record expunged.</p>
       {% endraw %}
     </script>
-    <div id="countyClerk"></div>
+    <!-- <div id="countyClerk"></div> -->
 
     <p><strong>Filter the list:</strong> Select the types of resources you want to see, then select "Apply filters".</p>
-    <div class="panel panel-default">
-      <script id="filter-option-template" type="text/x-handlebars-template">
-        {% raw %}
-        {{#each categories}}
-        <label class="control">
-          {{text}}
-          {{#if icon}}
-          <i class="{{icon}}"></i>
-          {{/if}}
-          <input class="filter-option category" type="checkbox" id="{{id}}" value="{{text}}">
-          <div class="check"></div>
-        </label>
-        {{/each}}
-        <h4 class="panel-title restriction-filter">
-          <span>Resources that serve</span>
-        </h4>
-        {{#each restrictions}}
-        <label class="control">
-          {{text}}
-          {{#if icon}}
-          <i class="{{icon}}"></i>
-          {{/if}}
-          <input class="filter-option restriction" type="checkbox" id="{{id}}" value="{{value}}">
-          <div class="check"></div>
-        </label>
-        {{/each}}
-        {% endraw %}
-      </script>
-      <div id="collapse-filters">
-        <div class="panel-body">
-          <h4 id="filter-heading">Looking for</h4>
-          <div class="checkbox" id="filters"></div>
+    <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+      <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="filter-heading">
+          <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse-filters" aria-expanded="true" aria-controls="collapse-filters">
+            <h4 class="panel-title">
+              <span>Select Resource Categories</span>
+              <span style="float:right;">
+                <i class="icon-chevron-down"></i>
+              </span>
+            </h4>
+          </a>
+        </div>
+        <script id="filter-option-template" type="text/x-handlebars-template">
+          {% raw %}
+          {{#each categories}}
+          <label class="control">
+            {{text}}
+            {{#if icon}}
+            <i class="{{icon}}"></i>
+            {{/if}}
+            <input class="filter-option category" type="checkbox" id="{{id}}" value="{{text}}">
+            <div class="check"></div>
+          </label>
+          {{/each}}
+          <h4 class="restriction-filter">Who</h4>
+          {{#each restrictions}}
+          <label class="control">
+            {{text}}
+            {{#if icon}}
+            <i class="{{icon}}"></i>
+            {{/if}}
+            <input class="filter-option restriction" type="checkbox" id="{{id}}" value="{{value}}">
+            <div class="check"></div>
+          </label>
+          {{/each}}
+          {% endraw %}
+        </script>
+        <div id="collapse-filters" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="filter-heading">
+          <div class="panel-body">
+            <h4 id="filter-heading">Where</h4>
+            <div class="row">
+              <div class="col-lg-7">
+                <div class="form-group">
+                  <input class='form-control' id='search-address' placeholder='Enter an address' type='text'>
+                </div>
+              </div>
+              <div class="col-lg-5">
+                <div class='form-group search-radius-group'>
+                  <label for="search-radius">Within</label>
+                  <select id='search-radius' class='form-control'>
+                    <option value='400'>2 blocks</option>
+                    <option value='805'>1/2 mile</option>
+                    <option value='1610'>1 mile</option>
+                    <option value='3220'>2 miles</option>
+                    <option value='8050' selected>5 miles</option>
+                    <option value='16095'>10 miles</option>
+                    <option value='40253'>25 miles</option>
+                    <option value='80506'>50 miles</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <h4>What</h4>
+            <div class="checkbox" id="filters"></div>
+          </div>
         </div>
       </div>
     </div>
 
     <div>
       <button class='btn btn-search' id="btnSearch"><i class='icon-search'></i> Apply filters</button>
-      <a href="{{site.baseurl}}/results" class='btn btn-reset' id="btnReset" data-toggle="tooltip" data-placement="bottom" title="Clear filters"><i class="icon-repeat" aria-hidden="true"></i> Clear filters</a>
+      <a href="{{site.baseurl}}/resources" class='btn btn-reset' id="btnReset" data-toggle="tooltip" data-placement="bottom" title="Clear filters"><i class="icon-repeat" aria-hidden="true"></i> Clear filters</a>
       <button class='btn btn-change' id='btnViewMode' data-toggle='tooltip' data-placement="bottom" title='Change view'><i class='icon-map-marker'></i> See map</button>
-      <button class='btn btn-save' id="btnSave"><i class='icon-star-o'></i> Save results</button>
+      <button class='btn btn-save' id="btnSave"><i class='icon-star-o'></i> Save resources</button>
     </div>
   </div>
 
@@ -140,30 +173,9 @@ permalink: /results/
       <div id="search-header" class="list-header">
         <h4>Search results</h4>
       </div>
-      <div class="address-header">
-        <div class="row">
-          <div class="col-sm-8">
-            Enter an address to see results within
-            <select id='search-radius' class='form-control'>
-              <option value='400'>2 blocks</option>
-              <option value='805'>1/2 mile</option>
-              <option value='1610'>1 mile</option>
-              <option value='3220'>2 miles</option>
-              <option value='8050' selected>5 miles</option>
-              <option value='16095'>10 miles</option>
-              <option value='40253'>25 miles</option>
-              <option value='80506'>50 miles</option>
-            </select>
-            <input class='form-control' id='search-address' placeholder='Enter address' type='text'>
-          </div>
-          <div class="col-sm-4">
-            <button class='btn btn-search' id="btnSearchAddress"><i class='icon-search'></i> Apply address</button>
-          </div>
-        </div>
-      </div>
       {% raw %}
       <script id="search-header-template" type="text/x-handlebars-template">
-        <h4>{{count}} search results {{#if location}} within {{location.distance}} of {{location.address}}
+        <h4>{{count}} resources {{#if location}} within {{location.distance}} of {{location.address}}
         {{else}} in Illinois {{/if}} for {{#if categories}} {{categories}}
         {{else}} all categories {{/if}} {{#if restrictions}} that serve {{restrictions}} {{/if}}</h4>
         <h5>Page {{ page }} of {{ totalPages }}</h5>

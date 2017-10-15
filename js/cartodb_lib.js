@@ -85,7 +85,7 @@ var CartoDbLib = {
       CartoDbLib.results_div = L.control({position: 'topright'});
 
       CartoDbLib.results_div.onAdd = function (map) {
-        this._div = L.DomUtil.create('div', 'results-count');
+        this._div = L.DomUtil.create('div', 'resources-count');
         this._div.innerHTML = "";
         return this._div;
       };
@@ -122,7 +122,8 @@ var CartoDbLib = {
       geocoder.geocode( { 'address': address }, function(results, status) {
         if (status == google.maps.GeocoderStatus.OK) {
           CartoDbLib.currentPinpoint = [results[0].geometry.location.lat(), results[0].geometry.location.lng()];
-          CartoDbLib.getClerk(results[0].address_components);
+          // Remove clerk for now
+          // CartoDbLib.getClerk(results[0].address_components);
           $.address.parameter('address', encodeURIComponent(address));
           $.address.parameter('radius', CartoDbLib.radius);
           CartoDbLib.address = address;

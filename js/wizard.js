@@ -67,14 +67,14 @@ var WIZARD_STEPS = [
 ];
 
 function updateQueryParams() {
-    var urlBase = "/results/#/?";
+    var urlBase = "/resources/#/?";
     var typeOptions = $.map($(".filter-option:checked"), function(obj, idx) { return obj.value; });
     if (typeOptions.length) urlBase += "type=" + encodeURIComponent(typeOptions.join(" AND ")) + "&";
 
     var address = $("#search-address").val();
     if (address.length) urlBase += "address=" + encodeURIComponent(address);
 
-    $(".results-link").attr("href", urlBase);
+    $(".resources-link").attr("href", urlBase);
 }
 
 function updateStep(idx) {
