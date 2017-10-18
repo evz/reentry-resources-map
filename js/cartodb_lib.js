@@ -1,42 +1,4 @@
-var facilityTypeOptions = [
-  "reentry",
-  "housing",
-  "food",
-  "employment",
-  "health",
-  "family_services",
-  "community_assistance",
-  "legal",
-  "veterans"
-];
-var restrictionOptions = [
-  "men_only",
-  "women_only"
-];
-var flagOptions = [
-  "men_only",
-  "women_only",
-  "women_children_only",
-  "no_sex_offenders",
-  "hiv_aids",
-  "substance_free",
-  "parolees",
-  "lgbtq_only"
-];
-var iconMap = {
-  "reentry": "icon-reentry",
-  "community_assistance": "icon-community",
-  "housing": "icon-home",
-  "food": "icon-food",
-  "health": "icon-heartbeat",
-  "legal": "icon-gavel",
-  "employment": "icon-work",
-  "veterans": "icon-vets",
-  "family_services": "icon-users",
-  "women_only": "icon-female",
-  "men_only": "icon-male",
-  "women_children_only": "icon-child"
-};
+var PAGE_SIZE = 20;
 
 var CartoDbLib = CartoDbLib || {};
 var CartoDbLib = {
@@ -45,22 +7,25 @@ var CartoDbLib = {
   lastClickedLayer: null,
   locationScope:   "illinois",
   currentPinpoint: null,
-  layerUrl: 'https://pjsier.carto.com/api/v2/viz/ee44a586-1d4f-11e7-8c92-0e3ebc282e83/viz.json',
-  tableName: 'combined_irgi_resources',
+  layerUrl: 'https://pjsier.carto.com/api/v2/viz/f9b470d9-f33b-4171-8acd-c8494fc6d748/viz.json',
+  tableName: 'updated_irgi_resources',
   userName: 'pjsier',
   geoSearch: '',
   whereClause: ' WHERE clerks is null ',
   typeSelections: '',
   userSelection: '',
   radius: '',
+  offset: 0,
+  results: [],
   resultsCount: 0,
   fields : "id, address, name, website, phone, hours, notes, restrictions, online_only, " + facilityTypeOptions.join(", ") + ", " + flagOptions.join(", "),
 
   initialize: function(){
     //reset filters
     $("#search-address").val(CartoDbLib.convertToPlainString($.address.parameter('address')));
-    $("#search-radius").val(CartoDbLib.convertToPlainString($.address.parameter('radius')));
-    $("#select-type").val(CartoDbLib.convertToPlainString($.address.parameter('type')));
+    if ($.address.parameter('radius')) {
+      $("#search-radius").val(CartoDbLib.convertToPlainString($.address.parameter('radius')));
+    }
 
     var num = $.address.parameter('modal_id');
 
@@ -120,7 +85,7 @@ var CartoDbLib = {
       CartoDbLib.results_div = L.control({position: 'topright'});
 
       CartoDbLib.results_div.onAdd = function (map) {
-        this._div = L.DomUtil.create('div', 'results-count');
+        this._div = L.DomUtil.create('div', 'resources-count');
         this._div.innerHTML = "";
         return this._div;
       };
@@ -134,10 +99,11 @@ var CartoDbLib = {
       CartoDbLib.info.addTo(CartoDbLib.map);
       CartoDbLib.clearSearch();
       CartoDbLib.renderMap();
-      CartoDbLib.renderList();
-      CartoDbLib.renderSavedResults();
-      CartoDbLib.updateSavedCounter();
-      CartoDbLib.getResults();
+      if (CartoDbLib.convertToPlainString($.address.parameter('type')).length <= 1) {
+        CartoDbLib.getListResults();
+        CartoDbLib.renderSavedResults();
+        CartoDbLib.updateSavedCounter();
+      }
     }
   },
 
@@ -156,7 +122,8 @@ var CartoDbLib = {
       geocoder.geocode( { 'address': address }, function(results, status) {
         if (status == google.maps.GeocoderStatus.OK) {
           CartoDbLib.currentPinpoint = [results[0].geometry.location.lat(), results[0].geometry.location.lng()];
-          CartoDbLib.getClerk(results[0].address_components);
+          // Remove clerk for now
+          // CartoDbLib.getClerk(results[0].address_components);
           $.address.parameter('address', encodeURIComponent(address));
           $.address.parameter('radius', CartoDbLib.radius);
           CartoDbLib.address = address;
@@ -167,10 +134,8 @@ var CartoDbLib = {
           CartoDbLib.setZoom();
           CartoDbLib.addIcon();
           CartoDbLib.addCircle();
+          CartoDbLib.getListResults();
           CartoDbLib.renderMap();
-          CartoDbLib.renderList();
-          CartoDbLib.getResults();
-
         }
         else {
           alert("We could not find your address: " + status);
@@ -183,10 +148,47 @@ var CartoDbLib = {
       CartoDbLib.createSQL();
       $.address.parameter('type', encodeURIComponent(CartoDbLib.typeSelections));
 
-      CartoDbLib.renderList();
+      CartoDbLib.getListResults();
       CartoDbLib.renderMap();
-      CartoDbLib.getResults();
     }
+  },
+
+  getListResults: function() {
+    var that = this;
+    var sql = new cartodb.SQL({ user: CartoDbLib.userName });
+
+    if (CartoDbLib == ' WHERE clerks is null ') {
+      CartoDbLib.whereClause = '';
+    }
+    that.offset = 0;
+
+    // Loading animation, removed when search header updated
+    $("#search-header").html("<h4>Loading... <div class='spinner'></div></h4>");
+
+    sql.execute("SELECT " + CartoDbLib.fields + " FROM " + CartoDbLib.tableName + CartoDbLib.whereClause)
+      .done(function(listData) {
+        that.results = listData.rows;
+        that.resultsCount = that.results.length;
+        that.results_div.update(that.resultsCount);
+
+        for (idx in that.results) {
+          if (that.results[idx].website != "") {
+            if (!that.results[idx].website.match(/^http/)) {
+              that.results[idx].website = "http://" + that.results[idx].website;
+            }
+          }
+          that.results[idx].icons = that.getIcons(that.results[idx]);
+          that.results[idx].flags = that.getFlags(that.results[idx]);
+          that.results[idx].cookie = that.checkCookieDuplicate(that.results[idx].id) == false;
+        }
+        that.results = that.results.sort(function(a, b) {
+          return (a.address===null)-(b.address===null) || -(a.address>b.address)||+(a.address<b.address);
+        });
+      }).done(function(listData) {
+        that.renderList();
+      }).error(function(errors) {
+        console.log("errors:" + errors);
+      });
   },
 
   renderMap: function() {
@@ -229,56 +231,53 @@ var CartoDbLib = {
   },
 
   renderList: function() {
-    var sql = new cartodb.SQL({ user: CartoDbLib.userName });
     var results = $('#results-list');
-
-    if (CartoDbLib == ' WHERE clerks is null ') {
-      CartoDbLib.whereClause = '';
-    }
-
     results.empty();
-
-    sql.execute("SELECT " + CartoDbLib.fields + " FROM " + CartoDbLib.tableName + CartoDbLib.whereClause)
-      .done(function(listData) {
-        var obj_array = listData.rows;
-        if (listData.rows.length == 0) {
-          results.append("<p class='no-results'>No results. Please broaden your search.</p>");
+    $("#prevButton").hide().off("click");
+    $("#nextButton").hide().off("click");
+    
+    var that = this;
+    var listOffset = this.offset;
+    var pageResults = CartoDbLib.results.slice(listOffset, listOffset + PAGE_SIZE);
+    
+    if (that.resultsCount == 0) {
+      $("#search-header").html("<h4 class='no-results'>No results. Please broaden your search.</h4>");
+      return;
+    }
+    
+    that.createSearchHeader();
+    
+    var source = $('#results-list-template').html();
+    var template = Handlebars.compile(source);
+    var result = template(pageResults);
+    $('#results-list').html(result);
+    $('.icon-star-o').tooltip();
+    $('.icon-star').tooltip();
+    
+    $(".facility-name").on("click", function() {
+      var thisName = $(this).text();
+      $.each(pageResults, function( index, obj ) {
+        if (obj.name == thisName ) {
+          CartoDbLib.modalPop(obj)
         }
-        else {
-          CartoDbLib.createSearchHeader(listData.rows.length);
-          for (idx in obj_array) {
-            if (obj_array[idx].website != "") {
-              if (!obj_array[idx].website.match(/^http/)) {
-                obj_array[idx].website = "http://" + obj_array[idx].website;
-              }
-            }
-            obj_array[idx].icons = CartoDbLib.getIcons(obj_array[idx]);
-            obj_array[idx].flags = CartoDbLib.getFlags(obj_array[idx]);
-            obj_array[idx].cookie = CartoDbLib.checkCookieDuplicate(obj_array[idx].id) == false;
-          }
-          obj_array = obj_array.sort(function(a, b) {
-            return (a.address===null)-(b.address===null) || -(a.address>b.address)||+(a.address<b.address);
-          });
-          var source = $('#results-list-template').html();
-          var template = Handlebars.compile(source);
-          var result = template(obj_array);
-          $('#results-list').html(result);
-          $('.icon-star-o').tooltip();
-          $('.icon-star').tooltip();
-        }
-    }).done(function(listData) {
-        $(".facility-name").on("click", function() {
-          var thisName = $(this).text();
-          var objArray = listData.rows;
-          $.each(objArray, function( index, obj ) {
-            if (obj.name == thisName ) {
-              CartoDbLib.modalPop(obj)
-            }
-          });
-        });
-    }).error(function(errors) {
-      console.log("errors:" + errors);
+      });
     });
+
+    if (listOffset > 0) {
+      $("#prevButton").click(function() { 
+        that.pageUpdate(listOffset - PAGE_SIZE); 
+      }).show();
+    }
+    if (listOffset + PAGE_SIZE < CartoDbLib.resultsCount) {
+      $("#nextButton").click(function() { 
+        that.pageUpdate(listOffset + PAGE_SIZE); 
+      }).show();
+    }
+  },
+
+  pageUpdate: function(offset) {
+    this.offset = offset;
+    this.renderList();
   },
 
   deleteBlankResults: function(array) {
@@ -293,17 +292,6 @@ var CartoDbLib = {
       }
     });
     return counter
-  },
-
-  getResults: function() {
-    var sql = new cartodb.SQL({ user: CartoDbLib.userName });
-
-    sql.execute("SELECT count(*) FROM " + CartoDbLib.tableName + CartoDbLib.whereClause)
-      .done(function(data) {
-        CartoDbLib.resultsCount = data.rows[0]["count"];
-        CartoDbLib.results_div.update(CartoDbLib.resultsCount);
-      }
-    );
   },
 
   modalPop: function(data) {
@@ -408,14 +396,17 @@ var CartoDbLib = {
     return newText.toLowerCase();
   },
 
-  createSearchHeader: function(count) {
-    var resultObj = {count: count};
+  createSearchHeader: function() {
+    var resultObj = {count: CartoDbLib.resultsCount};
     var radiusMap = {
       400: "2 blocks",
       805: "1/2 mile",
       1610: "1 mile",
       3220: "2 miles",
-      8050: "5 miles"
+      8050: "5 miles",
+      16095: "10 miles",
+      40253: "25 miles",
+      80506: "50 miles"
     };
 
     var address = $("#search-address").val();
@@ -428,11 +419,13 @@ var CartoDbLib = {
     var catSelections = $.map($('.filter-option.category:checked'), function(obj, i) {
       return obj.value;
     });
-    var resSelections = $.map($('.filter-option.restriction:checked'), function(obj, i) {
-      return obj.value;
+    var resSelections = $.map($('.filter-option.restriction:checked').parent(), function(obj, i) {
+      return $.trim(obj.textContent).toLowerCase() || $.trim(obj.innerText).toLowerCase();
     });
     resultObj.categories = catSelections.length ? catSelections.join(", ") : false;
     resultObj.restrictions = resSelections.length ? resSelections.join(", ") : false;
+    resultObj.page = (this.offset / 20) + 1;
+    resultObj.totalPages = Math.ceil(this.resultsCount / 20);
 
     var source = $('#search-header-template').html();
     var template = Handlebars.compile(source);
@@ -477,9 +470,9 @@ var CartoDbLib = {
     var address = $("#search-address").val();
 
     if (CartoDbLib.currentPinpoint != null && address != '') {
-      CartoDbLib.geoSearch = "ST_DWithin(ST_SetSRID(ST_POINT(" + CartoDbLib.currentPinpoint[1] +
+      CartoDbLib.geoSearch = "(ST_DWithin(ST_SetSRID(ST_POINT(" + CartoDbLib.currentPinpoint[1] +
         ", " + CartoDbLib.currentPinpoint[0] + "), 4326)::geography, the_geom::geography, " +
-        CartoDbLib.radius + ") OR the_geom IS NULL";
+        CartoDbLib.radius + ") OR the_geom IS NULL)";
     }
     else {
       CartoDbLib.geoSearch = ''
@@ -495,11 +488,17 @@ var CartoDbLib = {
 
     CartoDbLib.whereClause = " WHERE clerks is null ";
 
-    if (CartoDbLib.geoSearch != "") {
-      CartoDbLib.whereClause += " AND " + CartoDbLib.geoSearch;
-    }
     if (CartoDbLib.userSelection != "") {
       CartoDbLib.whereClause += CartoDbLib.userSelection;
+    }
+    if (CartoDbLib.geoSearch != "") {
+      CartoDbLib.whereClause += " AND " + CartoDbLib.geoSearch;
+      // Order by name by default, but if geography supplied order by distance
+      CartoDbLib.whereClause += " ORDER BY the_geom <-> ST_SetSRID(ST_MakePoint(" + CartoDbLib.currentPinpoint[1] +
+        ", " + CartoDbLib.currentPinpoint[0] + "), 4326)";
+    }
+    else {
+      CartoDbLib.whereClause += " ORDER BY name";
     }
   },
 
@@ -551,7 +550,10 @@ var CartoDbLib = {
 
   setZoom: function() {
     var zoom = '';
-    if (CartoDbLib.radius >= 8050) zoom = 12; // 5 miles
+    if (CartoDbLib.radius >= 80506) zoom = 9;
+    else if (CartoDbLib.radius >= 40253) zoom = 10;
+    else if (CartoDbLib.radius >= 16095) zoom = 11;
+    else if (CartoDbLib.radius >= 8050) zoom = 12; // 5 miles
     else if (CartoDbLib.radius >= 3220) zoom = 13; // 2 miles
     else if (CartoDbLib.radius >= 1610) zoom = 14; // 1 mile
     else if (CartoDbLib.radius >= 805) zoom = 15; // 1/2 mile

@@ -9,10 +9,17 @@ h1, h2, h3, .navbar-brand {
 
 h5 { margin-top: 0px ; margin-bottom: 2px; }
 
-a { color: #F57E20; }
+a {
+  color: #F57E20;
+  text-decoration: underline;
+}
+
+button a,
+a.btn {
+  text-decoration: none;
+}
 
 a:hover {
-  text-decoration: none;
   color: #134fb8;
 }
 
@@ -31,6 +38,10 @@ img {
 .navbar {
   margin-bottom: 10px;
   border-radius: 0px;
+}
+
+.navbar a {
+  text-decoration: none;
 }
 
 .navbar-inverse {
@@ -74,6 +85,8 @@ img {
   .navbar-brand {
       font-size: 26px;
       line-height: 1em;
+      max-width: 80%;
+      height: 100%;
   }
 }
 
@@ -182,6 +195,10 @@ https://kyusuf.com/post/completely-css-custom-checkbox-radio-buttons-and-select-
 
 #filter-heading a {
   color: #5187BB;
+  text-decoration: none;
+}
+#filter-heading span {
+  font-size: 22px;
 }
 #filter-heading a[aria-expanded="false"] h4 span i.icon-chevron-down {
   transform: rotate(0deg);
@@ -190,6 +207,25 @@ https://kyusuf.com/post/completely-css-custom-checkbox-radio-buttons-and-select-
 #filter-heading a[aria-expanded="true"] h4 span i.icon-chevron-down {
   transform: rotate(-180deg);
   transition: transform 0.2s linear;
+}
+
+#search-address {
+  margin-top: 5px;
+}
+
+.address-header .row div:first-child {
+  margin-bottom: 10px;
+}
+
+.address-header select {
+  width: 75px;
+  height: 30px;
+  display: inline-block;
+}
+
+#search-radius {
+  width: 75px;
+  display: inline-block;
 }
 
 .m-top-sm { margin-top: 10px; }
@@ -254,7 +290,7 @@ https://kyusuf.com/post/completely-css-custom-checkbox-radio-buttons-and-select-
   color: #777;
 }
 
-.results-count {
+.resources-count {
   font-family: 'Open Sans', sans-serif;
   padding: 6px 8px;
   background: #ffffff;
@@ -388,10 +424,14 @@ div#modal-image { padding: 0; }
         0px 0px 0px 6px rgba(0,0,0,0.2);
 }
 
-.restriction-filter {
+.panel-body h4 {
   margin-top: 25px;
   margin-bottom: 10px;
   color: #5187BB;
+}
+
+.panel-body > h4:first-child {
+  margin-top: 0;
 }
 
 @media (max-width: 768px) {
@@ -403,14 +443,166 @@ div#modal-image { padding: 0; }
   }
 }
 
+/* Spinner from https://codepen.io/brunjo/pen/WbrjKw */
+.spinner {
+  margin: 0 0 0 15px;
+  height: 30px;
+  width: 30px;
+  display: inline-block;
+  animation: rotate 0.8s infinite linear;
+  border: 6px solid #5187bb;
+  border-right-color: transparent;
+  border-radius: 50%;
+}
+
+@keyframes rotate {
+  0%    { transform: rotate(0deg); }
+  100%  { transform: rotate(360deg); }
+}
+
+.header-bg {
+  margin-left: -15px;
+  margin-right: -15px;
+  margin-top: -35px;
+  height: 350px;
+  background-image: url("img/irgi_bg.png");
+  background-attachment: fixed;
+  background-position: 0% 40%;
+  background-size: cover;
+}
+
+.header-bg .title {
+  position: absolute;
+  background-color: rgba(255,255,255,0.7);
+  color: rgb(92, 134, 182);
+  max-width: 600px;
+  left: 50%;
+  transform: translate(-50%);
+  top: 150px;
+  padding: 25px;
+  text-align: center;
+}
+
+@media (max-width: 768px) {
+  .header-bg .title {
+    top: 50px;
+    position: relative;
+    max-width: inherit;
+    width: 100%;
+    left: 0;
+    transform: none;
+  }
+}
+
+@media (max-width: 500px) {
+  .header-bg {
+    background-attachment: inherit;
+  }
+}
+
+.title-content {
+  margin-top: 50px;
+}
+
+#wizard-container {
+  padding-top: 25px;
+  margin-bottom: 50px;
+}
+
+#wizard-container p {
+  font-size: 18px;
+}
+
+#progress-indicator {
+  font-weight: bold;
+}
+
+#wizard-container .progress {
+  position: absolute;
+  left: 15px;
+  right: 15px;
+  height: 50px;
+  background: rgba(81, 135, 187, 0.4);
+}
+
+#wizard-container .progress .progress-line {
+  position: absolute;
+  left: 0;
+  height: 100%;
+  width: 0%;
+  background: rgba(81, 135, 187, 0.9);
+  transition: width 0.2s linear;
+}
+
+#wizard-container .progress-label {
+  position: absolute;
+  z-index: 1;
+  top: 25%;
+  height: 50%;
+  text-align: center;
+  bottom: 0;
+  font-weight: bold;
+  font-size: 18px;
+}
+
+#wizard-container > .resources-btn {
+  margin-top: 25px;
+  margin-bottom: 0;
+}
+
+#wizard-container div.checkbox {
+  margin-top: 25px;
+}
+
+#wizard-container p.help-text {
+  font-size: 16px;
+}
+
+#wizard-container label {
+  font-size: 16px;
+}
+
+.step .resources-btn {
+  float: right;
+}
+
+#wizard {
+  margin-top: 85px;
+}
+
+#wizard .step {
+  display: none;
+}
+
+#wizard > .resources-link {
+  font-size: 18px;
+}
+
+#wizard .step .next-btn {
+  float: right;
+}
+
+#wizard .step div.question {
+  margin-top: 35px;
+  margin-bottom: 20px;
+}
+
+.next-btn, .previous-btn, .resources-btn, .resources-btn > a {
+  background-color: #5187BB;
+  color: #fff;
+}
+.resources-btn > a:hover, .resources-btn > a:active, .resources-btn > a:focus {
+  color: #333333;
+}
+
 /* ICOMOON */
 @font-face {
   font-family: 'icomoon';
-  src:  url('fonts/icomoon.eot?sth074');
-  src:  url('fonts/icomoon.eot?sth074#iefix') format('embedded-opentype'),
-    url('fonts/icomoon.ttf?sth074') format('truetype'),
-    url('fonts/icomoon.woff?sth074') format('woff'),
-    url('fonts/icomoon.svg?sth074#icomoon') format('svg');
+  src:  url('fonts/icomoon.eot?8577gp');
+  src:  url('fonts/icomoon.eot?8577gp#iefix') format('embedded-opentype'),
+    url('fonts/icomoon.ttf?8577gp') format('truetype'),
+    url('fonts/icomoon.woff?8577gp') format('woff'),
+    url('fonts/icomoon.svg?8577gp#icomoon') format('svg');
   font-weight: normal;
   font-style: normal;
 }
@@ -424,6 +616,7 @@ div#modal-image { padding: 0; }
   font-variant: normal;
   text-transform: none;
   line-height: 1;
+  display: inline-block;
 
   /* Better Font Rendering =========== */
   -webkit-font-smoothing: antialiased;
@@ -435,12 +628,6 @@ div#modal-image { padding: 0; }
 }
 .icon-reentry:before {
   content: "\e903";
-}
-.icon-counseling:before {
-  content: "\e900";
-}
-.icon-community:before {
-  content: "\e900";
 }
 .icon-plus:before {
   content: "\f067";
@@ -495,6 +682,9 @@ div#modal-image { padding: 0; }
 }
 .icon-phone:before {
   content: "\f095";
+}
+.icon-advocacy:before {
+  content: "\f0a1";
 }
 .icon-group:before {
   content: "\f0c0";

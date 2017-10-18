@@ -1,5 +1,7 @@
 # Illinois Re-Entry Resource Map
 
+[![Build Status](https://travis-ci.org/ReEntryCoLab/reentry-resources-map.svg?branch=master)](https://travis-ci.org/ReEntryCoLab/reentry-resources-map)
+
 The Illinois Re-Entry Resource Map is a based on DataMade's
 [Probation Community Resources](https://github.com/datamade/probation-resources-map),
 but uses resources from the [Education Justice Project's](http://www.educationjustice.net/home/)

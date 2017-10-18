@@ -1,3 +1,9 @@
+var restrictionOptions = [
+  {id: 0, text: "Women", value: "men_only"},
+  {id: 1, text: "Men", value: "women_only"},
+  {id: 2, text: "People on the sex offenders registry", value: "prohibits_sex_offenders"}
+];
+
 $(window).resize(function () {
   var h = $(window).height(),
     offsetTop = 120; // Calculate the top offset
@@ -8,16 +14,11 @@ $(window).resize(function () {
 $(function() {
   CartoDbLib.initialize();
   new Clipboard('#copy-button');
-
   var autocomplete = new google.maps.places.Autocomplete(document.getElementById('search-address'));
 
   $('#btnReset').tooltip();
   $('#btnViewMode').tooltip();
   $('[data-tooltip="true"]').tooltip();
-
-  $(':checkbox').click(function(){
-    CartoDbLib.doSearch();
-  });
 
   $('#btnSearch').click(function(){
     // Temporary fix for map load issue: set show map as default.
@@ -37,11 +38,14 @@ $(function() {
     if ($('#mapCanvas').is(":visible")){
       $('#btnViewMode').html("<i class='icon-map-marker'></i> Map View");
       $('#listCanvas').show();
+      CartoDbLib.renderList();
       $('#mapCanvas').hide();
     }
     else {
       $('#btnViewMode').html("<i class='icon-list'></i> List View");
       $('#listCanvas').hide();
+      $("#nextButton").hide();
+      $("#prevButton").hide();
       $('#mapCanvas').show();
       CartoDbLib.map.invalidateSize();
     }
@@ -58,12 +62,31 @@ $(function() {
   // Render filters template
   var filterData = {
     categories: makeSelectData(facilityTypeOptions),
-    restrictions: makeSelectData(restrictionOptions)
+    restrictions: restrictionOptions
   };
   var source = $('#filter-option-template').html();
   var template = Handlebars.compile(source);
   var result = template(filterData);
   $('#filters').html(result);
+
+  // Check if there are any type parameters in the address
+  // if so, check the associated inputs and trigger a search
+  var addressTypeStr = CartoDbLib.convertToPlainString($.address.parameter('type'));
+  facilityTypeOptions.forEach(function (t) {
+    if (addressTypeStr.indexOf(t) !== -1) {
+      $('input.filter-option[value="' + CartoDbLib.formatText(t) + '"]').prop('checked', true);
+    }
+  });
+  flagOptions.forEach(function (f) {
+    // Modifying string because men_only is in str women_only
+    var checkStr = f === "men_only" ? addressTypeStr.replace("women_only", "") : addressTypeStr; 
+    if (checkStr.indexOf(f) !== -1) {
+      $('input.filter-option[value="' + f + '"]').prop('checked', true);
+    }
+  });
+  if (addressTypeStr.length > 0) {
+    CartoDbLib.doSearch();
+  }
 
   $("#btnSave").on('click', function() {
     CartoDbLib.addCookieValues();

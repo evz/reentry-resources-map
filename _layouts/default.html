@@ -96,6 +96,7 @@
     <script type="text/javascript" src="{{ site.baseurl }}/lib/js.cookie.js"></script>
     <script type="text/javascript" src="{{ site.baseurl }}/lib/clipboard.min.js"></script>
     <!-- <script type="text/javascript" src="{{ site.baseurl }}/js/analytics_lib.js"></script> -->
+    <script type="text/javascript" src="{{ site.baseurl }}/js/options.js"></script>
     <script type="text/javascript" src="{{ site.baseurl }}/js/cartodb_lib.js"></script>
 
   </head>
@@ -117,6 +118,10 @@
 
         <div id="navbar" class="collapse navbar-collapse">
           <ul class="nav navbar-nav pull-right" id="dropdown-results">
+              <li>
+                <a href="{{ site.baseurl }}/resources/"><i class="icon-list"></i> Resources</a>
+              </li>
+              {% if page.title == 'Resources' %}
               <li class="dropdown" id="saved-searches-nav">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-star"></i> Searches <b class="caret"></b></a>
                 <ul class="dropdown-menu saved-searches" id="searches">
@@ -125,6 +130,7 @@
               <li>
                 <a href="{{ site.baseurl }}/locations/" id="saved-locations"></a>
               </li>
+              {% endif %}
               <li>
                 <a href="#" id="download-guide"><i class="icon-file-o" aria-hidden="true"></i> Download Guide</a>
               </li>
@@ -134,10 +140,11 @@
               <li>
                 <a href="{{ site.baseurl }}/add/"><i class="icon-plus-circle" aria-hidden="true"></i> Add resource</a>
               </li>
+              {% if page.title == 'Resources' %}
               <li>
                 <a href="#" class="btn-print"><i class="icon-print" aria-hidden="true"></i> Print</a>
               </li>
-
+              {% endif %}
           </ul>
         </div>
       </div>
